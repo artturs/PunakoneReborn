@@ -11,6 +11,7 @@ using namespace std;
 
 void Kayttoliittyma::piirraLauta()
 {
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//Saa unicode shakkinappulat toimimaan printf kanssa:
 	//SetConsoleOutputCP(65001);
@@ -26,22 +27,37 @@ void Kayttoliittyma::piirraLauta()
 		ja tulostetaan se muussa tapauksessa tulostetaan 2 tyhjää välilyöntiä.
 		Parillisuuteen perustuen värjätään jokatoisen "ruudun" taustaväri
 	*/
-	int debug = 0;
+	int color = 0;
+	
 	for (int j = 0; j < 8; j++)
 	{
-		for (int i = 0; i < 8; i++)
+			std::wcout << 8 - j;
+			
+		
+		for (int i = 0; i < 8; i++, color++)
 		{
+			if (color % 2 == 0) {
+				SetConsoleTextAttribute(console, BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+			}
+			else {
+				SetConsoleTextAttribute(console, BACKGROUND_INTENSITY);
+			}
 			if (_asema->_lauta[i][j] != NULL) {
 				std::wstring nimi = _asema->_lauta[i][j]->getUnicode();
 				std::wcout << nimi;
 			}
 			else {
-				std::wcout << "  ";
+				std::wcout << " ";
 			}
 		}
+
+		color++;
+
 		std::wcout << "\n";
-	
+		SetConsoleTextAttribute(console, BACKGROUND_INTENSITY);
 	}
-	std:wcout << debug;
+	std::wcout << " ABCDEFGH";
+	
 	
 }
