@@ -29,9 +29,9 @@ void Kayttoliittyma::piirraLauta()
 	*/
 	int color = 0;
 	
-	for (int j = 0; j < 8; j++)
+	for (int j = 7; j >= 0; j--)
 	{
-			std::wcout << 8 - j;
+			std::wcout << j+1;
 			
 		
 		for (int i = 0; i < 8; i++, color++)
