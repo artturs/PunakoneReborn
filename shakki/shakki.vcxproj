@@ -81,11 +81,15 @@
     <ClCompile Include="kayttoliittyma.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nappula.cpp" />
+    <ClCompile Include="ruutu.cpp" />
+    <ClCompile Include="siirto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asema.h" />
     <ClInclude Include="kayttoliittyma.h" />
     <ClInclude Include="nappula.h" />
+    <ClInclude Include="ruutu.h" />
+    <ClInclude Include="siirto.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,12 @@
     <ClCompile Include="asema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ruutu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="siirto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kayttoliittyma.h">
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="asema.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ruutu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="siirto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

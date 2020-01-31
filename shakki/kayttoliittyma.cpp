@@ -5,6 +5,7 @@
 #include <io.h>
 #include <iostream>
 #include "kayttoliittyma.h"
+#include "siirto.h"
 
 using namespace std;
 
@@ -61,3 +62,4 @@ void Kayttoliittyma::piirraLauta()
 	
 	
 }
+Siirto annaVastustajanSiirto();
