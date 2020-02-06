@@ -11,5 +11,16 @@ int Ruutu::getSarake() {
 int Ruutu::getRivi() {
 	return rivi;
 }
+void Ruutu::setRivi(int rivi)
+{
+
+}
+
+
+void Ruutu::setSarake(int sarake)
+{
+
+}
+
 
 

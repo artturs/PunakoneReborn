@@ -3,12 +3,21 @@
 #include <string>
 #include <fcntl.h>
 #include <io.h>
-#include <iostream>
+#include<string>
 #include "kayttoliittyma.h"
 #include "siirto.h"
 
 using namespace std;
 
+Kayttoliittyma* Kayttoliittyma::instance = 0;
+
+
+Kayttoliittyma* Kayttoliittyma::getInstance()
+{
+	if (instance == 0)
+		instance = new Kayttoliittyma();
+	return instance;
+}
 
 void Kayttoliittyma::piirraLauta()
 {
@@ -62,4 +71,12 @@ void Kayttoliittyma::piirraLauta()
 	
 	
 }
-Siirto annaVastustajanSiirto();
+Siirto Kayttoliittyma::annaVastustajanSiirto() {
+	Siirto siirto;
+	return siirto;
+}
+int Kayttoliittyma::kysyVastustajanVari()
+{
+	return 0;
+}
+;

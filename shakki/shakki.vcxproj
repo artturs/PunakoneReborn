@@ -81,15 +81,20 @@
     <ClCompile Include="kayttoliittyma.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="nappula.cpp" />
+    <ClCompile Include="peli.cpp" />
     <ClCompile Include="ruutu.cpp" />
     <ClCompile Include="siirto.cpp" />
+    <ClCompile Include="vastustaja.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asema.h" />
     <ClInclude Include="kayttoliittyma.h" />
+    <ClInclude Include="minmaxpaluu.h" />
     <ClInclude Include="nappula.h" />
+    <ClInclude Include="peli.h" />
     <ClInclude Include="ruutu.h" />
     <ClInclude Include="siirto.h" />
+    <ClInclude Include="vastustaja.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

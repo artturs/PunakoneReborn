@@ -33,6 +33,12 @@
     <ClCompile Include="siirto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="peli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vastustaja.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kayttoliittyma.h">
@@ -48,6 +54,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="siirto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="minmaxpaluu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="peli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vastustaja.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

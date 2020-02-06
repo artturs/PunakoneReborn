@@ -1,4 +1,3 @@
-
 #include "siirto.h"
 
 Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu) {
