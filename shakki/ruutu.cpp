@@ -13,13 +13,13 @@ int Ruutu::getRivi() {
 }
 void Ruutu::setRivi(int rivi)
 {
-
+	this->rivi = rivi;
 }
 
 
 void Ruutu::setSarake(int sarake)
 {
-
+	this->sarake = sarake;
 }
 
 
