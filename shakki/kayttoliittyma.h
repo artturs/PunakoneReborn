@@ -22,7 +22,7 @@ private:
 
 	Asema* _asema;
 	static Kayttoliittyma* instance; // osoitin luokan ainoaan olioon (Singleton).
-
+	std::wstring siirtoString;
 	Kayttoliittyma() {}
 	Kayttoliittyma(Asema* asema) { this->_asema = asema; }
 };

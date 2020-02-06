@@ -3,7 +3,7 @@
 #include <string>
 #include <fcntl.h>
 #include <io.h>
-#include<string>
+#include <string>
 #include "kayttoliittyma.h"
 #include "siirto.h"
 
@@ -72,8 +72,29 @@ void Kayttoliittyma::piirraLauta()
 	
 }
 Siirto Kayttoliittyma::annaVastustajanSiirto() {
-	Siirto siirto;
-	return siirto;
+	int lahtoX;
+	int lahtoY;
+	int loppuX;
+	int loppuY;
+	wcout << "Anna siirtosi. Esim: Lf1-c4\n";
+	wcin >> siirtoString;
+	if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
+	{
+		//tee jotain
+	}
+	if (siirtoString.length() == 6) {
+		siirtoString.erase(0, 1);
+	}
+	else {
+		lahtoX = siirtoString[0] - 'a';
+		loppuX = siirtoString[3] - 'a';
+		lahtoY = siirtoString[1] - '1';
+		loppuY = siirtoString[4] - '1';
+	}
+	Ruutu lahtoRuutu(lahtoX, lahtoY);
+	Ruutu loppuRuutu(loppuX, loppuY);
+	Siirto siirto(lahtoRuutu, loppuRuutu);
+
 }
 int Kayttoliittyma::kysyVastustajanVari()
 {
