@@ -4,19 +4,19 @@
 #include "nappula.h"
 #include "ruutu.h"
 
-Nappula* Asema::vk = new Nappula(L"\u2654", 0, VK);
-Nappula* Asema::vd = new Nappula(L"\u2655", 0, VD);
-Nappula* Asema::vt = new Nappula(L"\u2656", 0, VT);
-Nappula* Asema::vl = new Nappula(L"\u2657", 0, VL);
-Nappula* Asema::vr = new Nappula(L"\u2658", 0, VR);
-Nappula* Asema::vs = new Nappula(L"\u2659", 0, VS);
+Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
+Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
+Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
+Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL);
+Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR);
+Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS);
 
-Nappula* Asema::mk = new Nappula(L"\u265A", 1, MK);
-Nappula* Asema::md = new Nappula(L"\u265B", 1, MD);
-Nappula* Asema::mt = new Nappula(L"\u265C", 1, MT);
-Nappula* Asema::ml = new Nappula(L"\u265D", 1, ML);
-Nappula* Asema::mr = new Nappula(L"\u265E", 1, MR);
-Nappula* Asema::ms = new Nappula(L"\u265F", 1, MS);
+Nappula* Asema::mk = new Kuningas(L"\u265A", 1, MK);
+Nappula* Asema::md = new Daami(L"\u265B", 1, MD);
+Nappula* Asema::mt = new Torni(L"\u265C", 1, MT);
+Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
+Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
+Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 
 Asema::Asema()
@@ -68,6 +68,13 @@ Asema::Asema()
 }
 void Asema::paivitaAsema(Siirto *siirto)
 {
+	int alkuX, alkuY, loppuX, loppuY;
+	alkuX = siirto->getAlkuruutu().getRivi;
+	alkuY = siirto->getAlkuruutu().getSarake;
+	loppuX = siirto->getLoppuruutu().getRivi;
+	loppuY = siirto->getLoppuruutu().getSarake;
+
+	
 
 	// Kaksoisaskel-lippu on oletusarvoisesti pois päältä.
 	// Asetetaan myöhemmin, jos tarvii.
@@ -83,12 +90,12 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Kaikki muut siirrot
 
 
-		//Ottaa siirron alkuruudussa olleen nappulan talteen 
-
+		//Ottaa siirron alkuruudussa olleen nappulan talteen		
+	Nappula* nappula = _lauta[alkuX][alkuY];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 
-
+	nappula = _lauta[loppuX][loppuY];
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
 
@@ -96,7 +103,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//// Katsotaan jos nappula on sotilas ja rivi on päätyrivi niin ei vaihdeta nappulaa 
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-
+	_lauta[alkuX][alkuY] = NULL;
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula
 
