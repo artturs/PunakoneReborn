@@ -28,27 +28,30 @@ int main()
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
+		Siirto siirto;
+		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		asema.paivitaAsema(&siirto);
+		Kayttoliittyma::getInstance()->piirraLauta();
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
-	    //if (lista.size() == 0) {
-			//lopetus = 0;
-			//std::wcout << "Peli loppui";
-			//continue;
-		//}
-		Siirto siirto;
+		if (lista.size() == 0) {
+			lopetus = 0;
+			std::wcout << "Peli loppui";
+			continue;
+		}
+		
 		if (asema.getSiirtovuoro() == koneenVari) {
-			MinMaxPaluu paluu;
+			//MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.maxi(3);
+				//paluu = asema.maxi(3);
 			}
 			else {
-				paluu = asema.mini(3);
+				//paluu = asema.mini(3);
 			}
-			siirto = paluu._parasSiirto;
+			//siirto = paluu._parasSiirto;
 		}
 		else {
-			siirto = Kayttoliittyma::getInstance()->
-				annaVastustajanSiirto();
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 		}
 		asema.paivitaAsema(&siirto);
 	}

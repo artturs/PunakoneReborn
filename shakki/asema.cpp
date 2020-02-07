@@ -95,7 +95,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 
-	nappula = _lauta[loppuX][loppuY];
+	_lauta[loppuX][loppuY] = nappula;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
 

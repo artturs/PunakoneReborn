@@ -30,20 +30,20 @@ void Kayttoliittyma::piirraLauta()
 
 	//Saa unicode shakkinappulat toimimaan cout:n kanssa:
 	_setmode(_fileno(stdout), _O_U16TEXT);
-	
-	/*	
-		Kaksinkertainen for silmukka joka käy asema-olion laudan läpi ja jos 
+
+	/*
+		Kaksinkertainen for silmukka joka käy asema-olion laudan läpi ja jos
 		siinä on nappula olio, niin kysytään sen nimi
 		ja tulostetaan se muussa tapauksessa tulostetaan 2 tyhjää välilyöntiä.
 		Parillisuuteen perustuen värjätään jokatoisen "ruudun" taustaväri
 	*/
 	int color = 0;
-	
+
 	for (int j = 7; j >= 0; j--)
 	{
-			std::wcout << j+1;
-			
-		
+		std::wcout << j + 1;
+
+
 		for (int i = 0; i < 8; i++, color++)
 		{
 			if (color % 2 == 0) {
@@ -68,8 +68,8 @@ void Kayttoliittyma::piirraLauta()
 		SetConsoleTextAttribute(console, BACKGROUND_INTENSITY);
 	}
 	std::wcout << " ABCDEFGH";
-	
-	
+
+
 }
 Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	int lahtoX;
@@ -78,7 +78,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	int loppuY;
 	wcout << "Anna siirtosi. Esim: Lf1-c4\n";
 	wcin >> siirtoString;
-	
+
 	while (true) {
 		if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
 		{
@@ -100,17 +100,23 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 		loppuX = siirtoString[3] - 'a';
 		lahtoY = siirtoString[1] - '1';
 		loppuY = siirtoString[4] - '1';
-	}
-		
+
 		if (lahtoX > 7 || lahtoX < 0 || lahtoY > 7 || lahtoY < 0 || loppuX > 7 || loppuX < 0 || loppuY > 7 || loppuY < 0) {
 			wcout << "\nAntamasi siirto on väärää muotoa\n";
 		}
 		else {
-			Ruutu lahtoRuutu(lahtoX, lahtoY);
-			Ruutu loppuRuutu(loppuX, loppuY);
-			Siirto siirto(lahtoRuutu, loppuRuutu);
-			return siirto;
+			break;
 		}
+	}
+
+	
+	Ruutu lahtoRuutu(lahtoX, lahtoY);
+	Ruutu loppuRuutu(loppuX, loppuY);
+	Siirto siirto(lahtoRuutu, loppuRuutu);
+	return siirto;
+		
+
+
 
 
 	
