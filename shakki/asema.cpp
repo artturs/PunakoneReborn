@@ -64,6 +64,7 @@ Asema::Asema()
 	_lauta[5][7] = ml;
 	_lauta[6][7] = mr;
 	_lauta[7][7] = mt;
+	_siirtovuoro = 0;
 	
 }
 void Asema::paivitaAsema(Siirto *siirto)
@@ -81,38 +82,67 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 
 	//Tarkastetaan on siirto lyhyt linna
-
+	if (siirto->onkoLyhytLinna()) {
+		if(_siirtovuoro==0){
+			_lauta[4][0] = NULL;
+			_lauta[6][0] = vk;
+			_lauta[7][0] = NULL;
+			_lauta[5][0] = vt;
+		}
+		if(_siirtovuoro==1){
+			_lauta[4][7] = NULL;
+			_lauta[6][7] = vk;
+			_lauta[7][7] = NULL;
+			_lauta[5][7] = vt;
+		}
+	}
 
 	// onko pitk‰ linna
+	if (siirto->onkoPitkaLinna()){
+		if (_siirtovuoro == 0) {
+			_lauta[4][0] = NULL;
+			_lauta[2][0] = vk;
+			_lauta[0][0] = NULL;
+			_lauta[3][0] = vt;
+		}
+		if (_siirtovuoro == 1) {
+			_lauta[4][7] = NULL;
+			_lauta[2][7] = vk;
+			_lauta[0][7] = NULL;
+			_lauta[3][7] = vt;
+		}
+	}
+	else {
 
 
 
-	// Kaikki muut siirrot
+		// Kaikki muut siirrot
 
 
-		//Ottaa siirron alkuruudussa olleen nappulan talteen		
-	Nappula* nappula = _lauta[alkuX][alkuY];
+			//Ottaa siirron alkuruudussa olleen nappulan talteen		
+		Nappula* nappula = _lauta[alkuX][alkuY];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 
-	_lauta[loppuX][loppuY] = nappula;
+		_lauta[loppuX][loppuY] = nappula;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
 
 		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
+		
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-	_lauta[alkuX][alkuY] = NULL;
+		_lauta[alkuX][alkuY] = NULL;
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v‰reille)
 
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
-
+	}
 	//p‰ivitet‰‰n _siirtovuoro
-
+	
 }
 
 
