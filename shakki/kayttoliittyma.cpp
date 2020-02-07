@@ -78,10 +78,17 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	int loppuY;
 	wcout << "Anna siirtosi. Esim: Lf1-c4\n";
 	wcin >> siirtoString;
+	
 	if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
 	{
-		//tee jotain
+		if (siirtoString == L"0-0") {
+			//tee jotain		
+		}
+		if (siirtoString == L"0-0-0") {
+			//tee jotain		
+		}
 	}
+
 	if (siirtoString.length() == 6) {
 		siirtoString.erase(0, 1);
 	}
@@ -91,13 +98,22 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 		lahtoY = siirtoString[1] - '1';
 		loppuY = siirtoString[4] - '1';
 	}
-	Ruutu lahtoRuutu(lahtoX, lahtoY);
-	Ruutu loppuRuutu(loppuX, loppuY);
-	Siirto siirto(lahtoRuutu, loppuRuutu);
+	if (lahtoX > 7 || lahtoX < 0 || lahtoY > 7 || lahtoY < 0 || loppuX > 7 || loppuX < 0 || loppuY > 7 || loppuY < 0) {
+		wcout << "\nAntamasi siirto on väärää muotoa\n";
+	}
+	else {
+		Ruutu lahtoRuutu(lahtoX, lahtoY);
+		Ruutu loppuRuutu(loppuX, loppuY);
+		Siirto siirto(lahtoRuutu, loppuRuutu);
+		return siirto;
+	}
+	
+
 
 }
 int Kayttoliittyma::kysyVastustajanVari()
 {
 	return 0;
 }
+
 ;
