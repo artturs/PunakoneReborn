@@ -82,6 +82,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 
 	//Tarkastetaan on siirto lyhyt linna
+
 	if (siirto->onkoLyhytLinna()) {
 		if(_siirtovuoro==0){
 			_lauta[4][0] = NULL;
@@ -96,9 +97,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[5][7] = vt;
 		}
 	}
-
-	// onko pitk‰ linna
-	if (siirto->onkoPitkaLinna()){
+	else if(siirto->onkoPitkaLinna()){
 		if (_siirtovuoro == 0) {
 			_lauta[4][0] = NULL;
 			_lauta[2][0] = vk;
@@ -112,25 +111,41 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_lauta[3][7] = vt;
 		}
 	}
-	else {
+	else { // Kaikki muut siirrot
 
-
-
-		// Kaikki muut siirrot
-
-
-			//Ottaa siirron alkuruudussa olleen nappulan talteen		
+		//Ottaa siirron alkuruudussa olleen nappulan talteen		
 		Nappula* nappula = _lauta[alkuX][alkuY];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 
 		_lauta[loppuX][loppuY] = nappula;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
-		// (asetetaan kaksoisaskel-lippu)
+		if (_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS &&  (alkuY - loppuY) == 2 || (alkuY - loppuY) == -2)
+		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
+			// (asetetaan kaksoisaskel-lippu)
+			kaksoisaskelSarakkeella = alkuY;
+			std::wcout << "\n kaksoisaskelflag\n";
+		}
+
 
 		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
-
+		if (_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		{
+			std::wcout << "\n ohestalyˆnti\n";
+			_lauta[loppuX][alkuY] = NULL;
+		}
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
+		if (nappula->getKoodi() == MS || nappula->getKoodi() == VS) {
+			if (nappula->getKoodi() == MS && loppuY == 0) {
+
+			}
+			if (nappula->getKoodi() == VS && loppuY == 7) {
+
+			}
+
+		}
+		
+
 		
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 		_lauta[alkuX][alkuY] = NULL;
@@ -138,10 +153,39 @@ void Asema::paivitaAsema(Siirto *siirto)
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
 
 		// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v‰reille)
-
+		if (nappula->getKoodi() == VK )
+		{
+			_onkoValkeaKuningasLiikkunut = 1;
+		}
+		if (nappula->getKoodi() == MK)
+		{
+			_onkoMustaKuningasLiikkunut = 1;
+		}
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v‰reille ja molemmille torneille)
+		if (alkuX == 7 && _lauta[alkuX][loppuX]->getKoodi() == VT)
+		{
+			_onkoValkeaKTliikkunut = 1;
+		}
+		if (alkuX == 0 && _lauta[alkuX][loppuX]->getKoodi() == VT)
+		{
+			_onkoValkeaDTliikkunut = 1;
+		}
+		if (alkuX == 7 && _lauta[alkuX][loppuX]->getKoodi() == MT)
+		{
+			_onkoMustaKTliikkunut = 1;
+		}
+		if (alkuX == 0 && _lauta[alkuX][loppuX]->getKoodi() == MT)
+		{
+			_onkoValkeaDTliikkunut = 1;
+		}
 	}
 	//p‰ivitet‰‰n _siirtovuoro
+	if (_siirtovuoro = 0) {
+		_siirtovuoro = 1;
+	}
+	if (_siirtovuoro = 1) {
+		_siirtovuoro = 0;
+	}
 	
 }
 
@@ -348,5 +392,21 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+	std::wcout << "\n debug";
+	int vari = this->getSiirtovuoro();
 
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->_lauta[i][j] == NULL) {
+				std::wcout << "\n tyhja ruutu";
+				continue;
+			}
+			if (this->_lauta[i][j]->getVari() != vari) {
+				std::wcout << "\n ei oman varinen";
+				continue;
+			}
+			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari);
+			std::wcout << "\n annaSiirrot";
+		}
+	}
 }
