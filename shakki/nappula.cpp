@@ -517,9 +517,9 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		
 	}
-	if (y == 6 && nappulanvari == 0) {
+	if (y == 6 && nappulanvari == 1) {
 
-		if (asema->_lauta[x][2] == NULL && asema->_lauta[x][4] == NULL) {
+		if (asema->_lauta[x][5] == NULL && asema->_lauta[x][4] == NULL) {
 			lista.push_back(Siirto(*ruutu, Ruutu(x, y - 2)));
 		}
 
@@ -528,16 +528,23 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	//valkeiden siirtoja 
 	if (y > 1 && y < 7 && nappulanvari == 0) {
 		//siirrot yks eteenpäin, checkataan onko tiellä jotain
-		if (asema->_lauta[x][y + 1] == NULL) {
+		if (asema->_lauta[x][y++] == NULL) {
 
-				lista.push_back(Siirto(*ruutu, Ruutu(x, y + 1)));
+				lista.push_back(Siirto(*ruutu, Ruutu(x, y++)));
 		}
 		//syömisiä
 		if (x < 7) {
-			if (asema->_lauta[x + 1][y + 1] != NULL) {
-				toisenvari = asema->_lauta[x + 1][y + 1]->getVari();
+			if (asema->_lauta[x++][y++] != NULL) {
+				toisenvari = asema->_lauta[x++][y++]->getVari();
 				if (toisenvari != nappulanvari) {
-						lista.push_back(Siirto(*ruutu, Ruutu(x + 1, y + 1)));
+						lista.push_back(Siirto(*ruutu, Ruutu(x++, y++)));
+				}
+			}
+			if(asema->_lauta[x--][y++] != NULL) 
+			{
+				toisenvari = asema->_lauta[x--][y++]->getVari();
+				if (toisenvari != nappulanvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(x--, y++)));
 				}
 			}
 		}
