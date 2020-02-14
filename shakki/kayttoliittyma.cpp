@@ -80,14 +80,22 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	wcin >> siirtoString;
 
 	while (true) {
+
+
+		if (siirtoString.length() < 4) {
+			wcout << "\nAntamasi siirto on väärää muotoa\n";
+			return Siirto(false, false, false);
+		}
+
+
 		if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
 		{
 			if (siirtoString == L"0-0") {
-				return Siirto(true, false);
+				return Siirto(true, false, true);
 				break;
 			}
 			if (siirtoString == L"0-0-0") {
-				return Siirto(false, true);
+				return Siirto(false, true, true);
 				break;
 			}
 		}
@@ -96,13 +104,18 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 			siirtoString.erase(0, 1);
 		}
 
-		lahtoX = siirtoString[0] - 'a';
-		loppuX = siirtoString[3] - 'a';
-		lahtoY = siirtoString[1] - '1';
-		loppuY = siirtoString[4] - '1';
+		try { lahtoX = siirtoString[0] - 'a'; }
+		catch(...) { lahtoX = 100; }
+		try { loppuX = siirtoString[3] - 'a'; }
+		catch (...) { loppuX = 100; }
+		try { lahtoY = siirtoString[1] - '1'; }
+		catch(...){ lahtoY = 100; }
+		try { loppuY = siirtoString[4] - '1'; }
+		catch (...) { loppuY = 100; }
 
 		if (lahtoX > 7 || lahtoX < 0 || lahtoY > 7 || lahtoY < 0 || loppuX > 7 || loppuX < 0 || loppuY > 7 || loppuY < 0) {
 			wcout << "\nAntamasi siirto on väärää muotoa\n";
+			return Siirto(false, false, false);
 		}
 		else {
 			break;
