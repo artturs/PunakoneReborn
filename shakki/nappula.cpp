@@ -20,7 +20,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 {
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	int nappulanvari = this->getVari();//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan väri
 	int toisenvari;
 	int xt, yt;
