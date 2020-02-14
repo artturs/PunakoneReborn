@@ -13,11 +13,12 @@ class Siirto
 public:
 	Siirto(Ruutu, Ruutu);
 	Siirto() {}
-	Siirto(bool, bool); // Linnoitus lyhesti (K-siipi) tai pitkästi (D-siipi?
+	Siirto(bool, bool, bool); // Linnoitus lyhesti (K-siipi) tai pitkästi (D-siipi?
 	Ruutu getAlkuruutu();
 	Ruutu getLoppuruutu();
 	bool onkoLyhytLinna();
 	bool onkoPitkaLinna();
+	bool onkoMahdollinen();
 	Nappula* _miksikorotetaan = 0;
 
 private:
@@ -25,4 +26,5 @@ private:
 	Ruutu _loppuRuutu;
 	bool _lyhytLinna;
 	bool _pitkaLinna;
+	bool _mahdollinen;
 };

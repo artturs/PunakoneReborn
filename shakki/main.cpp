@@ -104,6 +104,13 @@ int main()
 		Siirto siirto;
 		
 		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+
+		while (siirto.onkoMahdollinen() == false)
+		{
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		}
+		
+		
 		asema.paivitaAsema(&siirto);
 		
 
