@@ -70,10 +70,10 @@ Asema::Asema()
 void Asema::paivitaAsema(Siirto *siirto)
 {
 	int alkuX, alkuY, loppuX, loppuY;
-	alkuX = siirto->getAlkuruutu().getRivi();
-	alkuY = siirto->getAlkuruutu().getSarake();
-	loppuX = siirto->getLoppuruutu().getRivi();
-	loppuY = siirto->getLoppuruutu().getSarake();
+	alkuX = siirto->getAlkuruutu().getSarake();
+	alkuY = siirto->getAlkuruutu().getRivi();
+	loppuX = siirto->getLoppuruutu().getSarake();
+	loppuY = siirto->getLoppuruutu().getRivi();
 
 	
 
