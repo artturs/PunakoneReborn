@@ -201,118 +201,148 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	// toisenvari siis loppuruudussa olevan nappulan väri
 	int toisenvari;
 	int xt, yt;
-	xt = x + 1;
-	yt = y + 1;
+	
 
+	bool canCont = true;
 
 	//siirrot yläoikea
 	
 
-	for (xt = x + 1, yt = y + 1; xt < 99; xt++, yt++) {
-		if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-			//menee yli
+	for (xt = x + 1, yt = y + 1; xt < 10; xt++, yt++) {
+		
+		if (canCont) {
+			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
+				//menee yli
+				break;
+				canCont = false;
+			}
+			// ei mitääm tässä, tähän voi mennä
+			if (asema->_lauta[xt][yt] == NULL) {
+				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+			}
+			//tässä nappula, katsotaan voiko syyä
+			if (asema->_lauta[xt][yt] != NULL) {
+				toisenvari = asema->_lauta[xt][yt]->getVari();
+				//oma, ei voi syyä
+				if (nappulanvari == toisenvari) {
+					canCont = false;
+					break;
+				}
+				//ei oma, voi syyä
+				if (nappulanvari != toisenvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+					canCont = false;
+					break;
+				}
+
+			}
+		}
+		else
+		{
 			break;
 		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][yt] != NULL) {
-			toisenvari = asema->_lauta[xt][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-				break;
-			}
-
-		}
-			
 	}
 	
-	//siirrot ylävasen
-	for (xt = x - 1, yt = y + 1; xt < 99; xt--, yt++) {
-		if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][yt] != NULL) {
-			toisenvari = asema->_lauta[xt][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-				break;
-			}
+	canCont = true;
 
+	//siirrot ylävasen
+	for (xt = x - 1, yt = y + 1; xt < 10; xt--, yt++) {
+		if (canCont) {
+			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
+				//menee yli
+				canCont = false;
+				break;
+			}
+			// ei mitääm tässä, tähän voi mennä
+			if (asema->_lauta[xt][yt] == NULL) {
+				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+			}
+			//tässä nappula, katsotaan voiko syyä
+			if (asema->_lauta[xt][yt] != NULL) {
+				toisenvari = asema->_lauta[xt][yt]->getVari();
+				//oma, ei voi syyä
+				if (nappulanvari == toisenvari) {
+					canCont = false;
+					break;
+				}
+				//ei oma, voi syyä
+				if (nappulanvari != toisenvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+					canCont = false;
+					break;
+				}
+
+			}
+		}
+		else {
+			break;
 		}
 
 	}
 
 	//siirrot alaoikea
 	for (xt = x + 1, yt = y - 1; xt < 99; xt++, yt--) {
-		if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-			//menee yli
+		if (canCont) {
+			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
+				//menee yli
+				canCont = false;
+				break;
+			}
+			// ei mitääm tässä, tähän voi mennä
+			if (asema->_lauta[xt][yt] == NULL) {
+				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+			}
+			//tässä nappula, katsotaan voiko syyä
+			if (asema->_lauta[xt][yt] != NULL) {
+				toisenvari = asema->_lauta[xt][yt]->getVari();
+				//oma, ei voi syyä
+				if (nappulanvari == toisenvari) {
+					canCont = false;
+					break;
+				}
+				//ei oma, voi syyä
+				if (nappulanvari != toisenvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+					canCont = false;
+					break;
+				}
+
+			}
+		}
+		else {
 			break;
 		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][yt] != NULL) {
-			toisenvari = asema->_lauta[xt][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-				break;
-			}
-
-		}
-
 	}
 
 	//siirrot alavasen
 	for (xt = x - 1, yt = y - 1; xt < 99; xt--, yt--) {
-		if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][yt] != NULL) {
-			toisenvari = asema->_lauta[xt][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
+		if(canCont){
+			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
+				//menee yli
+				canCont = false;
 				break;
 			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
+			// ei mitääm tässä, tähän voi mennä
+			if (asema->_lauta[xt][yt] == NULL) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-				break;
 			}
+			//tässä nappula, katsotaan voiko syyä
+			if (asema->_lauta[xt][yt] != NULL) {
+				toisenvari = asema->_lauta[xt][yt]->getVari();
+				//oma, ei voi syyä
+				if (nappulanvari == toisenvari) {
+					canCont = false;
+					break;
+				}
+				//ei oma, voi syyä
+				if (nappulanvari != toisenvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
+					canCont = false;
+					break;
+				}
 
+			}
 		}
-
 	}
 }
 
