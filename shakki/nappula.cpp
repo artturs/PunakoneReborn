@@ -517,20 +517,21 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		
 	}
-	if (y == 6 && nappulanvari == 0) {
+	if (y == 6 && nappulanvari == 1) {
 
-		if (asema->_lauta[x][2] == NULL && asema->_lauta[x][4] == NULL) {
+		if (asema->_lauta[x][5] == NULL && asema->_lauta[x][4] == NULL) {
 			lista.push_back(Siirto(*ruutu, Ruutu(x, y - 2)));
 		}
 
 	}
 
 	//valkeiden siirtoja 
-	if (y > 1 && y < 7 && nappulanvari == 0) {
+	if (y >= 1 && y < 7 && nappulanvari == 0) {
 		//siirrot yks eteenpäin, checkataan onko tiellä jotain
 		if (asema->_lauta[x][y + 1] == NULL) {
 
 				lista.push_back(Siirto(*ruutu, Ruutu(x, y + 1)));
+				wcout << "\n siirto " << x << y;
 		}
 		//syömisiä
 		if (x < 7) {
