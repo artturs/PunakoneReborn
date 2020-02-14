@@ -20,7 +20,9 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 {
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	
+	int nappulanvari = vari;
+		//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan v‰ri
 	int toisenvari;
 	int xt, yt;
@@ -142,7 +144,8 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 {
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	int nappulanvari = vari;
+		//asema->_lauta[x][y]->getVari();
 	int toisenvari;
 
 	//m‰‰ritet‰‰n miten ratsun koordinaatit voivat muuttua
@@ -188,9 +191,13 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	
-	int y = ruutu->getRivi();
-	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	int x = ruutu->getRivi();
+	int y = ruutu->getSarake();
+
+	
+	wcout << "\n x:" << x << " y:" << y;
+	int nappulanvari = vari;
+
 	// toisenvari siis loppuruudussa olevan nappulan v‰ri
 	int toisenvari;
 	int xt, yt;
@@ -321,7 +328,8 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 {
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	int nappulanvari = vari;
+		//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan v‰ri
 	int toisenvari;
 	int xt, yt;
@@ -337,9 +345,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-			
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -357,9 +365,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -377,9 +385,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -397,9 +405,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -417,9 +425,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -437,8 +445,8 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
 			}
+			//ei oma, voi syy‰
 
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -477,9 +485,9 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 		}
 		else {
 			if (nappulanvari == toisenvari) {
-				//ei oma, voi syy‰
+				
 			}
-
+			//ei oma, voi syy‰
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 			}
@@ -496,7 +504,8 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 {
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
-	int nappulanvari = asema->_lauta[x][y]->getVari();
+	int nappulanvari = vari;
+		//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan v‰ri
 	int toisenvari;
 

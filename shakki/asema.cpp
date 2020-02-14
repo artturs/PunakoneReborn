@@ -193,7 +193,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 int Asema::getSiirtovuoro()
 {
-	return 0;
+	return _siirtovuoro;
 }
 
 
@@ -395,17 +395,17 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	std::wcout << "\n debug";
 	int vari = this->getSiirtovuoro();
 
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (this->_lauta[i][j] == NULL) {
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
+			if (this->_lauta[x][y] == NULL) {
 				std::wcout << "\n tyhja ruutu";
 				continue;
 			}
-			if (this->_lauta[i][j]->getVari() != vari) {
+			if (this->_lauta[x][y]->getVari() != vari) {
 				std::wcout << "\n ei oman varinen";
 				continue;
 			}
-			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari);
+			this->_lauta[x][y]->annaSiirrot(lista, &Ruutu(x, y), this, vari);
 			std::wcout << "\n annaSiirrot";
 		}
 	}
