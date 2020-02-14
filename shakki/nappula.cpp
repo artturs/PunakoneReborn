@@ -52,10 +52,44 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 
 void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
+	int n_i = ruutu->getRivi();
+	int n_j = ruutu->getSarake();
 
+	int n_v = vari;
+
+
+	if (vari == 1)
+	{
+
+		//mustan siirrot
+		if (asema->_lauta[n_i][n_j--] == NULL) {
+			lista.push_back(Siirto(*ruutu, Ruutu(n_i, n_j--)));
+		}
+
+		if (asema->_lauta[n_i][n_j--] == NULL && asema->_lauta[n_i][(--n_j)--] == NULL && n_j == 6) {
+			lista.push_back(Siirto(*ruutu, Ruutu(n_i, (--n_j)--)));
+			asema->kaksoisaskelSarakkeella = n_j;
+		}
+
+		if (asema->_lauta[n_i++][n_j--] != NULL && asema->_lauta[n_i++][n_j--]->getVari() != n_v)
+		{
+			lista.push_back(Siirto(*ruutu, Ruutu(n_i++, n_j--)));
+		}
+
+		if (asema->_lauta[n_i--][n_j--] != NULL && asema->_lauta[n_i--][n_j--]->getVari() != n_v)
+		{
+			lista.push_back(Siirto(*ruutu, Ruutu(n_i--, n_j--)));
+		}
+	}
+	else
+	{
+		//valkoisen siirrot
+
+	}
 }
 
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) {
+void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema)
+{
 
 }
