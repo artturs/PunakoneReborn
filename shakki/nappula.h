@@ -21,7 +21,7 @@ class Nappula
 private:
 	std::wstring	_unicode;	// nappulaa vastaava unicode-merkki
 	int				_vari;		// valkea = 0, musta = 1
-	int				_koodi;		// VT, VR, MT tms.
+	int				_koodi;		// VT, VR, MT tms
 
 public:
 	Nappula(std::wstring, int, int);
