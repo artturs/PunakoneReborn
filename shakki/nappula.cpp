@@ -12,7 +12,7 @@ Nappula::Nappula(wstring unicode, int vari, int koodi)
 	this->_vari = vari;
 	this->_koodi = koodi;
 
-
+	
 }
 
 
@@ -22,7 +22,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	int x = ruutu->getSarake();
 	
 	int nappulanvari = vari;
-		//asema->_lauta[x][y]->getVari();
+		
 	// toisenvari siis loppuruudussa olevan nappulan väri
 	int toisenvari;
 	int xt, yt;
@@ -190,160 +190,24 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-	
-	int x = ruutu->getRivi();
-	int y = ruutu->getSarake();
 
-	
+	int x = ruutu->getSarake();
+	int y = ruutu->getRivi();
+
 	wcout << "\n x:" << x << " y:" << y;
 	int nappulanvari = vari;
 
-	// toisenvari siis loppuruudussa olevan nappulan väri
-	int toisenvari;
-	int xt, yt;
-	
-
-	bool canCont = true;
-
 	//siirrot yläoikea
-	
-
-	for (xt = x + 1, yt = y + 1; xt < 10; xt++, yt++) {
-		
-		if (canCont) {
-			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-				//menee yli
-				break;
-				canCont = false;
-			}
-			// ei mitääm tässä, tähän voi mennä
-			if (asema->_lauta[xt][yt] == NULL) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-			}
-			//tässä nappula, katsotaan voiko syyä
-			if (asema->_lauta[xt][yt] != NULL) {
-				toisenvari = asema->_lauta[xt][yt]->getVari();
-				//oma, ei voi syyä
-				if (nappulanvari == toisenvari) {
-					canCont = false;
-					break;
-				}
-				//ei oma, voi syyä
-				if (nappulanvari != toisenvari) {
-					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-					canCont = false;
-					break;
-				}
-
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
-	
-	canCont = true;
+	siirtoLoop(lista, ruutu, asema, x, y, 1, 1, vari);
 
 	//siirrot ylävasen
-	for (xt = x - 1, yt = y + 1; xt < 10; xt--, yt++) {
-		if (canCont) {
-			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-				//menee yli
-				canCont = false;
-				break;
-			}
-			// ei mitääm tässä, tähän voi mennä
-			if (asema->_lauta[xt][yt] == NULL) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-			}
-			//tässä nappula, katsotaan voiko syyä
-			if (asema->_lauta[xt][yt] != NULL) {
-				toisenvari = asema->_lauta[xt][yt]->getVari();
-				//oma, ei voi syyä
-				if (nappulanvari == toisenvari) {
-					canCont = false;
-					break;
-				}
-				//ei oma, voi syyä
-				if (nappulanvari != toisenvari) {
-					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-					canCont = false;
-					break;
-				}
-
-			}
-		}
-		else {
-			break;
-		}
-
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, -1, 1, vari);
 
 	//siirrot alaoikea
-	for (xt = x + 1, yt = y - 1; xt < 99; xt++, yt--) {
-		if (canCont) {
-			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-				//menee yli
-				canCont = false;
-				break;
-			}
-			// ei mitääm tässä, tähän voi mennä
-			if (asema->_lauta[xt][yt] == NULL) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-			}
-			//tässä nappula, katsotaan voiko syyä
-			if (asema->_lauta[xt][yt] != NULL) {
-				toisenvari = asema->_lauta[xt][yt]->getVari();
-				//oma, ei voi syyä
-				if (nappulanvari == toisenvari) {
-					canCont = false;
-					break;
-				}
-				//ei oma, voi syyä
-				if (nappulanvari != toisenvari) {
-					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-					canCont = false;
-					break;
-				}
-
-			}
-		}
-		else {
-			break;
-		}
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, 1, -1, vari);
 
 	//siirrot alavasen
-	for (xt = x - 1, yt = y - 1; xt < 99; xt--, yt--) {
-		if(canCont){
-			if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-				//menee yli
-				canCont = false;
-				break;
-			}
-			// ei mitääm tässä, tähän voi mennä
-			if (asema->_lauta[xt][yt] == NULL) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-			}
-			//tässä nappula, katsotaan voiko syyä
-			if (asema->_lauta[xt][yt] != NULL) {
-				toisenvari = asema->_lauta[xt][yt]->getVari();
-				//oma, ei voi syyä
-				if (nappulanvari == toisenvari) {
-					canCont = false;
-					break;
-				}
-				//ei oma, voi syyä
-				if (nappulanvari != toisenvari) {
-					lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
-					canCont = false;
-					break;
-				}
-
-			}
-		}
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, -1, -1, vari);
 }
 
 
