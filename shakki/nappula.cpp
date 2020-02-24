@@ -55,7 +55,8 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		}
 
 	}
-
+	xt = x;
+	yt = y;
 	//siirrot vasemmalle
 	for (xt = x - 1, yt = y + 1; xt < 99; xt--) {
 		if (xt < 0 || xt > 7) {
@@ -83,6 +84,8 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 	}
 
+	xt = x;
+	yt = y;
 	//siirrot ylös
 	for (yt = y + 1; xt < 99; yt++) {
 		if (yt < 0 || yt > 7) {
@@ -109,6 +112,8 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		}
 
 	}
+	xt = x;
+	yt = y;
 
 	//siirrot alas
 	for (yt = y - 1; xt < 99; yt--) {
@@ -154,9 +159,9 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		{-1,2},{-1,-2},{1,2},{1,-2},{-2,1},{-2,-1},{2,1},{2,-1}
 	};
 	//käydään kaikki määritetyt vaihtoehdot läpi
-	for (int d = 0; d < 8; d++) {
+	for (int d = 0; d < 8; ++d) {
 		int dx = koord_deltat[d][0];
-		int dy = koord_deltat[0][d];
+		int dy = koord_deltat[d][1];
 
 		int tmpX = x + dx;
 		int tmpY = y + dy;
