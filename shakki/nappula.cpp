@@ -26,19 +26,11 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	//siirrot oikealle
 	siirtoLoop(lista, ruutu, asema, x, y, 1, 0, vari);
 
-	}
-
 	//siirrot vasemmalle
 	siirtoLoop(lista, ruutu, asema, x, y, -1, 0, vari);
-
-	xt = x;
-	yt = y;
+	
 	//siirrot ylös
 	siirtoLoop(lista, ruutu, asema, x, y, 0, 1, vari);
-
-		}
-
-	}
 
 	//siirrot alas
 	siirtoLoop(lista, ruutu, asema, x, y, 0, -1, vari);
