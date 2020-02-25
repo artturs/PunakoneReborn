@@ -120,7 +120,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		_lauta[loppuX][loppuY] = nappula;
 		// Tarkistetaan oliko sotilaan kaksoisaskel
-		if (_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS &&  (alkuY - loppuY) == 2 || (alkuY - loppuY) == -2)
+		//tässä virhe, tai lauseitten takia
+		if (_lauta[alkuX][alkuY]->getKoodi() == MS && (alkuY - loppuY) == 2 || _lauta[alkuX][alkuY]->getKoodi() == VS &&  (loppuY - alkuY) == 2)
 		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
 			// (asetetaan kaksoisaskel-lippu)
 			kaksoisaskelSarakkeella = alkuY;
