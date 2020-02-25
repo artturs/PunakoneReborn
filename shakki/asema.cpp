@@ -150,6 +150,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym‰n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 		_lauta[alkuX][alkuY] = NULL;
+		
 		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l‰htenyt nappula
 
@@ -179,6 +180,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{
 			_onkoValkeaDTliikkunut = 1;
 		}
+		
 	}
 	//p‰ivitet‰‰n _siirtovuoro
 	if (_siirtovuoro = 0) {

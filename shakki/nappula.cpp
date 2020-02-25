@@ -166,25 +166,29 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		int tmpX = x + dx;
 		int tmpY = y + dy;
 
-		if (tmpY > 7 || tmpY < 0 || tmpX > 7 || tmpX < 0) {
+		if (tmpY > 7 || tmpY < 0 || tmpX > 7 || tmpX < 0 || asema->_lauta[tmpX][tmpY] != NULL) {
 			//ei kelpuuteta
+			
 			continue;
 		}
 		if (asema->_lauta[tmpX][tmpY] == NULL){
 			//nice, tähän voi mennä
+			//TÄSSÄ PROBLEM!!!! luulee että ruudut jotka ei ole null on null
 			lista.push_back(Siirto(*ruutu, Ruutu(tmpX, tmpY)));
+			
+			continue;
 
 		}
 		else {
 			toisenvari = asema->_lauta[tmpX][tmpY]->getVari();
 			//oma, ei voi syyä
 			if (nappulanvari == toisenvari) {
-				continue;
+				
 			}
 			//ei oma, voi syyä
 			if (nappulanvari != toisenvari) {
 				lista.push_back(Siirto(*ruutu, Ruutu(tmpX, tmpY)));
-				continue;
+				
 			}
 
 		}
