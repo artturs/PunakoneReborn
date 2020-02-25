@@ -22,128 +22,25 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	int x = ruutu->getSarake();
 	
 	int nappulanvari = vari;
-		
-	// toisenvari siis loppuruudussa olevan nappulan väri
-	int toisenvari;
-	int xt, yt;
-	xt = x + 1;
-	yt = y + 1;
-
+	
 	//siirrot oikealle
-	for (xt = x + 1; xt < 99; xt++) {
-		if (xt < 0 || xt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][y] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, y)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][y] != NULL) {
-			toisenvari = asema->_lauta[xt][y]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, y)));
-				break;
-			}
-
-		}
-
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, 1, 0, vari);
 
 	//siirrot vasemmalle
-	for (xt = x - 1, yt = y + 1; xt < 99; xt--) {
-		if (xt < 0 || xt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[xt][y] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(xt, y)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[xt][yt] != NULL) {
-			toisenvari = asema->_lauta[xt][y]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(xt, y)));
-				break;
-			}
-
-		}
-
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, -1, 0, vari);
 
 	//siirrot ylös
-	for (yt = y + 1; xt < 99; yt++) {
-		if (yt < 0 || yt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[x][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(x, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[x][yt] != NULL) {
-			toisenvari = asema->_lauta[x][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(x, yt)));
-				break;
-			}
-
-		}
-
-	}
+	siirtoLoop(lista, ruutu, asema, x, y, 0, 1, vari);
 
 	//siirrot alas
-	for (yt = y - 1; xt < 99; yt--) {
-		if (xt < 0 || xt > 7 || yt < 0 || yt > 7) {
-			//menee yli
-			break;
-		}
-		// ei mitääm tässä, tähän voi mennä
-		if (asema->_lauta[x][yt] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(x, yt)));
-		}
-		//tässä nappula, katsotaan voiko syyä
-		if (asema->_lauta[x][yt] != NULL) {
-			toisenvari = asema->_lauta[x][yt]->getVari();
-			//oma, ei voi syyä
-			if (nappulanvari == toisenvari) {
-				break;
-			}
-			//ei oma, voi syyä
-			if (nappulanvari != toisenvari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(x, yt)));
-				break;
-			}
-
-		}
-
-	}
-
+	siirtoLoop(lista, ruutu, asema, x, y, 0, -1, vari);
 }
 
 
 void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-	int y = ruutu->getRivi();
-	int x = ruutu->getSarake();
+	int x = ruutu->getRivi();
+	int y = ruutu->getSarake();
 	int nappulanvari = vari;
 		//asema->_lauta[x][y]->getVari();
 	int toisenvari;
