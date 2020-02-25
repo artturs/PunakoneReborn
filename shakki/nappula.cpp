@@ -26,11 +26,19 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	//siirrot oikealle
 	siirtoLoop(lista, ruutu, asema, x, y, 1, 0, vari);
 
+	}
+
 	//siirrot vasemmalle
 	siirtoLoop(lista, ruutu, asema, x, y, -1, 0, vari);
 
+	xt = x;
+	yt = y;
 	//siirrot ylös
 	siirtoLoop(lista, ruutu, asema, x, y, 0, 1, vari);
+
+		}
+
+	}
 
 	//siirrot alas
 	siirtoLoop(lista, ruutu, asema, x, y, 0, -1, vari);
@@ -51,9 +59,9 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		{-1,2},{-1,-2},{1,2},{1,-2},{-2,1},{-2,-1},{2,1},{2,-1}
 	};
 	//käydään kaikki määritetyt vaihtoehdot läpi
-	for (int d = 0; d < 8; d++) {
+	for (int d = 0; d < 8; ++d) {
 		int dx = koord_deltat[d][0];
-		int dy = koord_deltat[0][d];
+		int dy = koord_deltat[d][1];
 
 		int tmpX = x + dx;
 		int tmpY = y + dy;
@@ -170,7 +178,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//oikealle
 	xt = x + 1;
 	yt = y;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt > 0 && yt < 8 && yt >= 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -190,7 +198,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//alas oikealle
 	xt = x + 1;
 	yt = y - 1;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt > 0 && yt < 8 && yt >= -1) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -210,7 +218,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//alas
 	xt = x;
 	yt = y - 1;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt >= 0 && yt < 8 && yt >= -1) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -230,7 +238,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	// alas vasemmalle
 	xt = x - 1 ;
 	yt = y - 1;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt >= -1 && yt < 8 && yt >= -1) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -250,7 +258,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//vasemmalle
 	xt = x - 1;
 	yt = y;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt >= -1 && yt < 8 && yt > 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -270,7 +278,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//ylös vasemmalle
 	xt = x -1;
 	yt = y + 1;
-	if (xt < 8 && xt > 0 && yt < 8 && yt > 0) {
+	if (xt < 8 && xt >= -1 && yt < 8 && yt > 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -323,7 +331,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		if (asema->_lauta[x][y + 1] == NULL) {
 
 				lista.push_back(Siirto(*ruutu, Ruutu(x, y + 1)));
-				wcout << "\n siirto " << x << y;
+				
 		}
 		//syömisiä
 		if (x < 7) {
