@@ -118,19 +118,25 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
 
-		_lauta[loppuX][loppuY] = nappula;
+		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		//tässä virhe, tai lauseitten takia
 		if (_lauta[alkuX][alkuY]->getKoodi() == MS && (alkuY - loppuY) == 2 || _lauta[alkuX][alkuY]->getKoodi() == VS &&  (loppuY - alkuY) == 2)
 		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
 			// (asetetaan kaksoisaskel-lippu)
-			kaksoisaskelSarakkeella = alkuY;
+			kaksoisaskelSarakkeella = alkuX;
 			std::wcout << "\n kaksoisaskelflag\n";
 		}
 
 
 		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
-		if (_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		
+		if (nappula->getKoodi() == VS && _lauta[loppuX][alkuY]->getKoodi() == MS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		{
+			std::wcout << "\n ohestalyönti\n";
+			_lauta[loppuX][alkuY] = NULL;
+		}
+		if (nappula->getKoodi() == MS || _lauta[loppuX][alkuY]->getKoodi() == VS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 		{
 			std::wcout << "\n ohestalyönti\n";
 			_lauta[loppuX][alkuY] = NULL;
@@ -149,6 +155,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+		_lauta[loppuX][loppuY] = nappula;
 		_lauta[alkuX][alkuY] = NULL;
 		
 		//

@@ -345,8 +345,11 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 		//ohestalyönti valkea
 		if (vari == 0 && y == 4 && asema->kaksoisaskelSarakkeella != -1) {
+			wcout << "\n debug33";
 			if (asema->_lauta[asema->kaksoisaskelSarakkeella][4] && asema->_lauta[asema->kaksoisaskelSarakkeella][4]->getKoodi() == MS)
 				lista.push_back(Siirto(*ruutu, Ruutu(asema->kaksoisaskelSarakkeella, 5)));
+			wcout << "\n debug44";
+			wcout << "\n" << asema->kaksoisaskelSarakkeella;
 		}
 		
 	}
