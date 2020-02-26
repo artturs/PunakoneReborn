@@ -39,8 +39,8 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-	int x = ruutu->getRivi();
-	int y = ruutu->getSarake();
+	int x = ruutu->getSarake();
+	int y = ruutu->getRivi();
 	int nappulanvari = vari;
 		//asema->_lauta[x][y]->getVari();
 	int toisenvari;
@@ -51,7 +51,7 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 		{-1,2},{-1,-2},{1,2},{1,-2},{-2,1},{-2,-1},{2,1},{2,-1}
 	};
 	//k‰yd‰‰n kaikki m‰‰ritetyt vaihtoehdot l‰pi
-	for (int d = 0; d < 8; ++d) {
+	for (int d = 0; d < 8; d++) {
 		int dx = koord_deltat[d][0];
 		int dy = koord_deltat[d][1];
 
@@ -134,12 +134,14 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	xt = x;
 	yt = y + 1;
 	if(xt < 8 && xt > 0 && yt < 8 && yt > 0){
-		toisenvari = asema->_lauta[xt][yt]->getVari();
+		
+		
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhj‰, voi menn‰
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 		}
 		else {
+			toisenvari = asema->_lauta[xt][yt]->getVari();
 			if (nappulanvari == toisenvari) {
 				
 			}
@@ -160,6 +162,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 		}
 		else {
+			toisenvari = asema->_lauta[xt][yt]->getVari();
 			if (nappulanvari == toisenvari) {
 				
 			}
@@ -180,6 +183,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 		}
 		else {
+			toisenvari = asema->_lauta[xt][yt]->getVari();
 			if (nappulanvari == toisenvari) {
 				
 			}
@@ -200,6 +204,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
 		}
 		else {
+			toisenvari = asema->_lauta[xt][yt]->getVari();
 			if (nappulanvari == toisenvari) {
 				
 			}

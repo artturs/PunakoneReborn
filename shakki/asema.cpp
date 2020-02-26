@@ -164,19 +164,19 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_onkoMustaKuningasLiikkunut = 1;
 		}
 		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille väreille ja molemmille torneille)
-		if (alkuX == 7 && _lauta[alkuX][loppuX]->getKoodi() == VT)
+		if (alkuX == 7 && nappula->getKoodi() == VT)
 		{
 			_onkoValkeaKTliikkunut = 1;
 		}
-		if (alkuX == 0 && _lauta[alkuX][loppuX]->getKoodi() == VT)
+		if (alkuX == 0 && nappula->getKoodi() == VT)
 		{
 			_onkoValkeaDTliikkunut = 1;
 		}
-		if (alkuX == 7 && _lauta[alkuX][loppuX]->getKoodi() == MT)
+		if (alkuX == 7 && nappula->getKoodi() == MT)
 		{
 			_onkoMustaKTliikkunut = 1;
 		}
-		if (alkuX == 0 && _lauta[alkuX][loppuX]->getKoodi() == MT)
+		if (alkuX == 0 && nappula->getKoodi() == MT)
 		{
 			_onkoValkeaDTliikkunut = 1;
 		}
@@ -220,13 +220,13 @@ bool Asema::getOnkoMustaKuningasLiikkunut()
 
 bool Asema::getOnkoValkeaDTliikkunut()
 {
-	return false;
+	return _onkoValkeaDTliikkunut;
 }
 
 
 bool Asema::getOnkoValkeaKTliikkunut()
 {
-	return false;
+	return _onkoValkeaKTliikkunut;
 }
 
 
