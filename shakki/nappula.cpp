@@ -306,7 +306,6 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	int y = ruutu->getRivi();
 	int x = ruutu->getSarake();
 	int nappulanvari = vari;
-		//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan väri
 	int toisenvari;
 
@@ -330,8 +329,14 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	if (y >= 1 && y < 7 && nappulanvari == 0) {
 		//siirrot yks eteenpäin, checkataan onko tiellä jotain
 		if (asema->_lauta[x][y + 1] == NULL) {
-
+			if (y < 6)
+			{
 				lista.push_back(Siirto(*ruutu, Ruutu(x, y + 1)));
+			}
+			else
+			{
+				//lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x, y + 1), lista, asema));
+			}
 				
 		}
 		//syömisiä
@@ -380,5 +385,37 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) {
+	if (siirto->getLoppuruutu().getRivi() == 7) {
+		// valkea korottaa
+		siirto->_miksikorotetaan = asema->vd;
+		lista.push_back(*siirto);
 
+		Siirto torniksi = *siirto;
+		torniksi._miksikorotetaan = asema->vt;
+		lista.push_back(torniksi);
+
+		Siirto lahetiksi = *siirto;
+		lahetiksi._miksikorotetaan = asema->vl;
+		lista.push_back(lahetiksi);
+
+		Siirto ratsuksi = *siirto;
+		ratsuksi._miksikorotetaan = asema->vr;
+		lista.push_back(ratsuksi);
+	}
+	else if (siirto->getLoppuruutu().getRivi() == 0) {
+		siirto->_miksikorotetaan = asema->md;
+		lista.push_back(*siirto);
+
+		Siirto torniksi = *siirto;
+		torniksi._miksikorotetaan = asema->mt;
+		lista.push_back(torniksi);
+
+		Siirto lahetiksi = *siirto;
+		lahetiksi._miksikorotetaan = asema->ml;
+		lista.push_back(lahetiksi);
+
+		Siirto ratsuksi = *siirto;
+		ratsuksi._miksikorotetaan = asema->mr;
+		lista.push_back(ratsuksi);
+	}
 }

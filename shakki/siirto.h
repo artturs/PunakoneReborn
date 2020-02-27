@@ -19,6 +19,7 @@ public:
 	bool onkoLyhytLinna();
 	bool onkoPitkaLinna();
 	bool onkoMahdollinen();
+
 	Nappula* _miksikorotetaan = 0;
 
 private:

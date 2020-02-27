@@ -49,7 +49,7 @@ Asema::Asema()
 	_lauta[6][0] = vr;
 	_lauta[7][0] = vt;
 
-	_lauta[0][6] = ms;
+	//_lauta[0][6] = ms;
 	_lauta[1][6] = ms;
 	_lauta[2][6] = ms;
 	_lauta[3][6] = ms;
@@ -57,7 +57,7 @@ Asema::Asema()
 	_lauta[5][6] = ms;
 	_lauta[6][6] = ms;
 	_lauta[7][6] = ms;
-	_lauta[0][7] = mt;
+	//_lauta[0][7] = mt;
 	_lauta[1][7] = mr;
 	_lauta[2][7] = ml;
 	_lauta[3][7] = md;
@@ -410,7 +410,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 	for (auto volvo : vastustajanSiirrot)
 	{
 		//katsotaan voiko vihulaisen nappula mennä ruutuun
-		if (ruutu->getSarake == volvo.getLoppuruutu().getSarake && ruutu->getRivi == volvo.getLoppuruutu().getRivi)
+		if (ruutu->getSarake() == volvo.getLoppuruutu().getSarake() && ruutu->getRivi() == volvo.getLoppuruutu().getRivi())
 		{
 			eihuolta = false;
 			break;
@@ -441,7 +441,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 			if (this->_lauta[x][y] == NULL) {
 				continue;
 			}
-			if (this->_lauta[x][y]->getKoodi == kuninkaanVari) {
+			if (this->_lauta[x][y]->getKoodi() == kuninkaanVari) {
 				kuningasX = x;
 				kuningasY = y;
 				break;
@@ -456,9 +456,9 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 		tmpAs.paivitaAsema(&fiat);
 		//Katsotaan onko siirretty nappula kuningas
 		Nappula* siirretty;
-		siirretty = this->_lauta[fiat.getAlkuruutu().getSarake][fiat.getAlkuruutu().getRivi];
+		siirretty = this->_lauta[fiat.getAlkuruutu().getSarake()][fiat.getAlkuruutu().getRivi()];
 		
-		if (siirretty->getKoodi == MK || siirretty->getKoodi == VK) {
+		if (siirretty->getKoodi() == MK || siirretty->getKoodi() == VK) {
 			x = fiat.getLoppuruutu().getSarake();
 			y = fiat.getLoppuruutu().getRivi();
 
