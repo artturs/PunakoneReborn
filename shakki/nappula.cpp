@@ -198,7 +198,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//alas oikealle
 	xt = x + 1;
 	yt = y - 1;
-	if (xt < 8 && xt > 0 && yt < 8 && yt >= -1) {
+	if (xt < 8 && xt > 0 && yt < 8 && yt >= 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -219,7 +219,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	//alas
 	xt = x;
 	yt = y - 1;
-	if (xt < 8 && xt >= 0 && yt < 8 && yt >= -1) {
+	if (xt < 8 && xt >= 0 && yt < 8 && yt >= 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
@@ -239,7 +239,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	// alas vasemmalle
 	xt = x - 1 ;
 	yt = y - 1;
-	if (xt < 8 && xt >= -1 && yt < 8 && yt >= -1) {
+	if (xt < 8 && xt >= -1 && yt < 8 && yt >= 0) {
 		if (asema->_lauta[xt][yt] == NULL) {
 			//tyhjä, voi mennä
 			lista.push_back(Siirto(*ruutu, Ruutu(xt, yt)));
