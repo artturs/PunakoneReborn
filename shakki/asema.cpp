@@ -3,6 +3,7 @@
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
+using namespace std;
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
@@ -390,23 +391,103 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
+	bool eihuolta = true;
+	list<Siirto> vastustajanSiirrot;
+	//ker‰t‰‰n vihulaisen siirrot
+	for (int x = 0; x < 8; x++) 
+	{
+		for (int y = 0; y < 8; y++) 
+		{
+			if (this->_lauta[x][y] == NULL) {
+				continue;
+			}
+			if (this->_lauta[x][y]->getVari() == vastustajanVari) {
+				this->_lauta[x][y]->annaSiirrot(vastustajanSiirrot, &Ruutu(x, y), this, vastustajanVari);
+			}
+		}
+	}
 
-	return false;
+	for (auto volvo : vastustajanSiirrot)
+	{
+		//katsotaan voiko vihulaisen nappula menn‰ ruutuun
+		if (ruutu->getSarake == volvo.getLoppuruutu().getSarake && ruutu->getRivi == volvo.getLoppuruutu().getRivi)
+		{
+			eihuolta = false;
+			break;
+		}
+	}
+
+
+	return eihuolta;
 }
 
 
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 {
+	int kuningasX, kuningasY;
+	int kuninkaanVari;
+	list <Siirto> pareLista;
+	Asema tmpAs;
+
+	//tarkistetaan kumpaa kuningasta t‰ytyy etsi‰
+
+	if (vari == 0) {kuninkaanVari = VK;}
+	else { kuninkaanVari = MK; }
+
+	//etsit‰‰n edell‰ mainittu kuningas
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
+
+			if (this->_lauta[x][y] == NULL) {
+				continue;
+			}
+			if (this->_lauta[x][y]->getKoodi == kuninkaanVari) {
+				kuningasX = x;
+				kuningasY = y;
+				break;
+			}
+			
+		}
+	}
+
+	for (auto fiat : lista) {
+		int x, y;
+		tmpAs = *this;
+		tmpAs.paivitaAsema(&fiat);
+		//Katsotaan onko siirretty nappula kuningas
+		Nappula* siirretty;
+		siirretty = this->_lauta[fiat.getAlkuruutu().getSarake][fiat.getAlkuruutu().getRivi];
+		
+		if (siirretty->getKoodi == MK || siirretty->getKoodi == VK) {
+			x = fiat.getLoppuruutu().getSarake();
+			y = fiat.getLoppuruutu().getRivi();
+
+		}
+		else {
+			x = kuningasX;
+			y = kuningasY;
+		}
+		if (tmpAs.onkoRuutuUhattu(&Ruutu(x, y), !vari) == true) {
+			pareLista.push_back(fiat);
+		}
+	}
+	lista = pareLista;
+	
+
 
 }
 
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	std::wcout << "\n debug";
+	
 	int vari = this->getSiirtovuoro();
+	
 
+	//kaikki mahd siirrot
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
+			
 			if (this->_lauta[x][y] == NULL) {
 				std::wcout << "\n tyhja ruutu";
 				continue;
@@ -419,4 +500,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			std::wcout << "\n annaSiirrot";
 		}
 	}
+	//etsit‰‰n kuningas
+
 }
