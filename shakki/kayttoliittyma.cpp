@@ -6,11 +6,14 @@
 #include <string>
 #include "kayttoliittyma.h"
 #include "siirto.h"
+#include "asema.h"
 
 using namespace std;
 
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
+string secret = "up-up-down-down-<->-<->-B-A";
+wstring konami(secret.begin(), secret.end());
 
 Kayttoliittyma* Kayttoliittyma::getInstance()
 {
@@ -80,6 +83,21 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	wcin >> siirtoString;
 
 	while (true) {
+		/* if (siirtoString == konami) {
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					if (_asema->_lauta[i][j] != NULL) 
+					{
+						if(_asema->_lauta[i][j]->getVari == )
+						_asema->_lauta[i][j] = NULL;
+					}
+					
+				}
+			}
+		}
+		*/
 
 
 		if (siirtoString.length() < 4) {
