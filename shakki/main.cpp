@@ -93,10 +93,10 @@ int main()
 	int koneenVari = peli.getKoneenVari();
 
 
-	lista.clear();
+	
 	while (true) {
 		
-		
+		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		asema.annaLaillisetSiirrot(lista);
 		printAllAvailableMoves(lista, asema);
