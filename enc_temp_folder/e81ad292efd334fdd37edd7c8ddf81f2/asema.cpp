@@ -49,7 +49,7 @@ Asema::Asema()
 	_lauta[6][0] = vr;
 	_lauta[7][0] = vt;
 
-	_lauta[0][6] = ms;
+	//_lauta[0][6] = ms;
 	_lauta[1][6] = ms;
 	_lauta[2][6] = ms;
 	_lauta[3][6] = ms;
@@ -57,7 +57,7 @@ Asema::Asema()
 	_lauta[5][6] = ms;
 	_lauta[6][6] = ms;
 	_lauta[7][6] = ms;
-	_lauta[0][7] = mt;
+	//_lauta[0][7] = mt;
 	_lauta[1][7] = mr;
 	_lauta[2][7] = ml;
 	_lauta[3][7] = md;

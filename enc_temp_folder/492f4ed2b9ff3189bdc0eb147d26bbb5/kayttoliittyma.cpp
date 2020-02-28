@@ -31,8 +31,6 @@ void Kayttoliittyma::piirraLauta()
 		std::string Art = getFileContents(Reader);       //Get file
 		std::cout << Art << std::endl;               //Print it to the screen
 		Reader.close();                           //Close file
-
-		first = false;
 	}
 
 
