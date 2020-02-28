@@ -116,6 +116,7 @@ int main()
 		
 		
 		asema.paivitaAsema(&siirto);
+		wcout << "\Evaluaatio: " << asema.evaluoi() << "\n";
 		
 
 	}

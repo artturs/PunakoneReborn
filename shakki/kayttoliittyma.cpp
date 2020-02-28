@@ -112,13 +112,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 		}
 		*/
 
-
-		if (siirtoString.length() < 4) {
-			wcout << "\nAntamasi siirto on väärää muotoa\n";
-			return Siirto(false, false, false);
-		}
-
-
 		if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
 		{
 			if (siirtoString == L"0-0") {
@@ -130,6 +123,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 				break;
 			}
 		}
+		if (siirtoString.length() < 4) {
+			wcout << "\nAntamasi siirto on väärää muotoa\n";
+			return Siirto(false, false, false);
+		}
+
+
+		
 
 		else if (siirtoString.length() == 6) {
 			siirtynytNappulaString = siirtoString[0];

@@ -133,15 +133,20 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		// Ohestalyˆnti on tyhj‰‰n ruutuun. Vieress‰ oleva (sotilas) poistetaan.
 		
-		if (nappula->getKoodi() == VS && _lauta[loppuX][alkuY]->getKoodi() == MS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		if (nappula->getKoodi() == VS && _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 		{
-			std::wcout << "\n ohestalyˆnti\n";
-			_lauta[loppuX][alkuY] = NULL;
+			if (_lauta[loppuX][alkuY]->getKoodi() == MS) {
+				std::wcout << "\n ohestalyˆnti\n";
+				_lauta[loppuX][alkuY] = NULL;
+			}
 		}
-		if (nappula->getKoodi() == MS || _lauta[loppuX][alkuY]->getKoodi() == VS && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		if (nappula->getKoodi() == MS || _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 		{
-			std::wcout << "\n ohestalyˆnti\n";
-			_lauta[loppuX][alkuY] = NULL;
+			
+			if (_lauta[loppuX][alkuY]->getKoodi() == VS) {
+				std::wcout << "\n ohestalyˆnti\n";
+				_lauta[loppuX][alkuY] = NULL;
+			}
 		}
 		//// Katsotaan jos nappula on sotilas ja rivi on p‰‰tyrivi niin ei vaihdeta nappulaa 
 		if (nappula->getKoodi() == MS || nappula->getKoodi() == VS) {
@@ -267,23 +272,55 @@ vai olla est‰m‰ss‰ vastustajan korotusta siksi ei oteta kantaa
 */
 double Asema::evaluoi()
 {
-	return 0;
+	float evaluaatio = 0;
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (this->_lauta[x][y] == NULL) {
+				continue;
+			}
+			if (this->_lauta[x][y]->getKoodi() == VS) {
+				evaluaatio++;
+			}
+			if (this->_lauta[x][y]->getKoodi() == MS) {
+				evaluaatio--;
+			}
+			if (this->_lauta[x][y]->getKoodi() == VR) {
+				evaluaatio += 3;
+			}
+			if (this->_lauta[x][y]->getKoodi() == MR) {
+				evaluaatio -= 3;
+			}
+			if (this->_lauta[x][y]->getKoodi() == VL) {
+				evaluaatio += 3.25;
+			}
+			if (this->_lauta[x][y]->getKoodi() == ML) {
+				evaluaatio -= 3.25;
+			}
+			if (this->_lauta[x][y]->getKoodi() == VT) {
+				evaluaatio += 5;
+			}
+			if (this->_lauta[x][y]->getKoodi() == MT) {
+				evaluaatio -= 5;
+			}
+			if (this->_lauta[x][y]->getKoodi() == VD) {
+				evaluaatio += 9;
+			}
+			if (this->_lauta[x][y]->getKoodi() == MD) {
+				evaluaatio -= 9;
+			}
+		}
+	}
+	return evaluaatio;
 
-	//kertoimet asetettu sen takia ett‰ niiden avulla asioiden painoarvoa voidaan s‰‰t‰‰ helposti yhdest‰ paikasta
-
-	//1. Nappuloiden arvo
-
-	//2. Kuningas turvassa
-
-	//3. Arvosta keskustaa
-
-	// 4. Arvosta linjoja
-
+	
 }
 
 
 double Asema::laskeNappuloidenArvo(int vari)
 {
+	
 	return 0;
 
 }
