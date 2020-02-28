@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <fcntl.h>
 #include <io.h>
@@ -9,7 +10,7 @@
 #include "asema.h"
 
 using namespace std;
-
+std::string getFileContents(std::ifstream&);
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
 string secret = "up-up-down-down-<->-<->-B-A";
@@ -24,6 +25,16 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 
 void Kayttoliittyma::piirraLauta()
 {
+	if (first) 
+	{
+		std::ifstream Reader("TEXT.txt");             //Open file
+		std::string Art = getFileContents(Reader);       //Get file
+		std::cout << Art << std::endl;               //Print it to the screen
+		Reader.close();                           //Close file
+	}
+
+
+
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//Saa unicode shakkinappulat toimimaan printf kanssa:
@@ -119,7 +130,11 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 		}
 
 		else if (siirtoString.length() == 6) {
+			siirtynytNappulaString = siirtoString[0];
 			siirtoString.erase(0, 1);
+		}
+		else {
+			siirtynytNappulaString = L"s";
 		}
 
 		try { lahtoX = siirtoString[0] - 'a'; }
@@ -144,6 +159,42 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	Ruutu lahtoRuutu(lahtoX, lahtoY);
 	Ruutu loppuRuutu(loppuX, loppuY);
 	Siirto siirto(lahtoRuutu, loppuRuutu);
+
+	std::wstring korotettuNappula;
+	if (siirtynytNappulaString == L"s" && (loppuY == 0 || loppuY == 7)) {
+		std::wcout << "Miksi nappulaksi haluat korottaa? (esim. D)\n";
+		std::wcin >> korotettuNappula;
+		if (loppuY == 7) {
+			if (korotettuNappula == L"D" || korotettuNappula == L"d") {
+				siirto._miksikorotetaan = _asema->vd;
+			}
+			if (korotettuNappula == L"T" || korotettuNappula == L"t") {
+				siirto._miksikorotetaan = _asema->vt;
+			}
+			if (korotettuNappula == L"R" || korotettuNappula == L"r") {
+				siirto._miksikorotetaan = _asema->vr;
+			}
+			if (korotettuNappula == L"L" || korotettuNappula == L"l") {
+				siirto._miksikorotetaan = _asema->vl;
+			}
+		}
+
+		if (loppuY == 0) {
+			if (korotettuNappula == L"D" || korotettuNappula == L"d") {
+				siirto._miksikorotetaan = _asema->md;
+			}
+			if (korotettuNappula == L"T" || korotettuNappula == L"t") {
+				siirto._miksikorotetaan = _asema->mt;
+			}
+			if (korotettuNappula == L"R" || korotettuNappula == L"r") {
+				siirto._miksikorotetaan = _asema->mr;
+			}
+			if (korotettuNappula == L"L" || korotettuNappula == L"l") {
+				siirto._miksikorotetaan = _asema->ml;
+			}
+		}
+	}
+
 	return siirto;
 		
 
@@ -156,5 +207,29 @@ int Kayttoliittyma::kysyVastustajanVari()
 {
 	return 0;
 }
+
+
+std::string getFileContents(std::ifstream& File)
+{
+	std::string Lines = "";        //All lines
+
+	if (File)                      //Check if everything is good
+	{
+		while (File.good())
+		{
+			std::string TempLine;                  //Temp line
+			std::getline(File, TempLine);        //Get temp line
+			TempLine += "\n";                      //Add newline character
+
+			Lines += TempLine;                     //Add newline
+		}
+		return Lines;
+	}
+	else                           //Return error
+	{
+		return "ERROR File does not exist.";
+	}
+}
+
 
 ;

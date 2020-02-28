@@ -19,10 +19,11 @@ public:
 	static Kayttoliittyma* getInstance();
 
 private:
-
+	bool first = true;
 	Asema* _asema;
 	static Kayttoliittyma* instance; // osoitin luokan ainoaan olioon (Singleton).
 	std::wstring siirtoString;
+	std::wstring siirtynytNappulaString;
 	Kayttoliittyma() {}
 	Kayttoliittyma(Asema* asema) { this->_asema = asema; }
 };

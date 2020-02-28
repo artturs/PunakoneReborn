@@ -335,7 +335,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			}
 			else
 			{
-				//lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x, y + 1), lista, asema));
+				lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x, y + 1)), lista, asema);
 			}
 				
 		}

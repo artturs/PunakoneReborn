@@ -96,6 +96,9 @@
     <ClInclude Include="siirto.h" />
     <ClInclude Include="vastustaja.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="TEXT.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

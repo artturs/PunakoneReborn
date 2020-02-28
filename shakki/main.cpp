@@ -3,10 +3,12 @@
 #include <io.h>
 #include <fcntl.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "kayttoliittyma.h"
 #include "Siirto.h"
 #include "asema.h"
+           
 
 using namespace std;
 void printAllAvailableMoves(list<Siirto> lista, Asema asema)
@@ -84,7 +86,9 @@ int main()
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 	wcout << "HeippariShakki\n";
-	wcout << "Tervetuloa pelaamaan!\n";
+
+	
+
 	int lopetus = 100;
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
