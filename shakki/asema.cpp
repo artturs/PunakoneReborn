@@ -500,6 +500,6 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			std::wcout << "\n annaSiirrot";
 		}
 	}
-	//etsitään kuningas
+	
 
 }
