@@ -85,7 +85,7 @@ int main()
 {
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
-	wcout << "HeippariShakki\n";
+	
 
 	
 

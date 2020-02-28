@@ -479,7 +479,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-	std::wcout << "\n debug";
+	
 	
 	int vari = this->getSiirtovuoro();
 	
@@ -489,15 +489,15 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 		for (int y = 0; y < 8; y++) {
 			
 			if (this->_lauta[x][y] == NULL) {
-				std::wcout << "\n tyhja ruutu";
+				
 				continue;
 			}
 			if (this->_lauta[x][y]->getVari() != vari) {
-				std::wcout << "\n ei oman varinen";
+				
 				continue;
 			}
 			this->_lauta[x][y]->annaSiirrot(lista, &Ruutu(x, y), this, vari);
-			std::wcout << "\n annaSiirrot";
+			
 		}
 	}
 	

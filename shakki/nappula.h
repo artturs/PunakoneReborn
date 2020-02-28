@@ -68,7 +68,7 @@ public:
 			// ei mitääm tässä, tähän voi mennä
 			if (asema->_lauta[_uusiX][_uusiY] == NULL){
 				lista.push_back(Siirto(*ruutu, Ruutu(_uusiX, _uusiY)));
-				std::wcout << "\n x:" << _uusiX << " y:" << _uusiY;
+				
 			}
 			//tässä nappula, katsotaan voiko syyä
 			if (asema->_lauta[_uusiX][_uusiY] != NULL)
