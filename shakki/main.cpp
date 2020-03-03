@@ -20,6 +20,9 @@ void printAllAvailableMoves(list<Siirto> lista, Asema asema)
 
 	for (auto v : lista)
 	{
+		if (v.onkoLyhytLinna()) { wcout << "\n lyhyt linna"; continue; }
+		if (v.onkoPitkaLinna()) { wcout << "\n pitkä linna"; continue; }
+
 		switch (v.getAlkuruutu().getSarake()) {
 		case 0:
 			xCoordInCharAlku = 'a';
@@ -80,6 +83,9 @@ void printAllAvailableMoves(list<Siirto> lista, Asema asema)
 
 		std::wcout << "\n(" << xCoordInCharAlku << v.getAlkuruutu().getRivi() + 1 << "-" << xCoordInCharLoppu << v.getLoppuruutu().getRivi() + 1 << ")";
 	}
+	
+
+
 }
 int main()
 {

@@ -596,6 +596,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	
 
 	//kaikki mahd siirrot
+	annaLinnoitusSiirrot(lista, vari);
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
 			
