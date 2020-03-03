@@ -399,7 +399,7 @@ double Asema::linjat(int vari)
 MinMaxPaluu Asema::minimax(int syvyys)
 {
 	MinMaxPaluu paluuarvo;
-	MinMaxPaluu paluuarvo;
+	
 
 	// Generoidaan aseman lailliset siirrot.
 	std::list<Siirto> siirrot;
@@ -408,6 +408,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	// Rekursion kantatapaus 1: peli on loppu
 	if (siirrot.size() == 0)
 	{
+
 		// *** TODO ***
 		//
 		// Laillisia siirtoja ei ole. Jos siirtovuoroisen pelaajan
