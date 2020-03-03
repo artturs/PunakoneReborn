@@ -399,16 +399,68 @@ double Asema::linjat(int vari)
 MinMaxPaluu Asema::minimax(int syvyys)
 {
 	MinMaxPaluu paluuarvo;
+	MinMaxPaluu paluuarvo;
 
 	// Generoidaan aseman lailliset siirrot.
+	std::list<Siirto> siirrot;
+	annaLaillisetSiirrot(siirrot);
 
 	// Rekursion kantatapaus 1: peli on loppu
+	if (siirrot.size() == 0)
+	{
+		// *** TODO ***
+		//
+		// Laillisia siirtoja ei ole. Jos siirtovuoroisen pelaajan
+		// kuningas on uhattu, on hän hävinnyt (matti). Jos kuningas
+		// ei ole uhattu, on peli tasapeli (patti).
+		//
+		// Aseta sopiva paluuarvo (valkean voitto, mustan voitto, tasapeli),
+		// eli esim. 1, -1, tai 0.
+		//
+		paluuarvo._evaluointiArvo = 0;
+		return paluuarvo;
+	}
 
 	// Rekursion kantatapaus 2: katkaisusyvyydessä
+	if (syvyys == 0)
+	{
+		// Pyydetään evaluointifunktion arvio nykyisestä asemasta.
+		// Evaluointifunktion arvojen pitää olla ääripäiden (voitto, häviö)
+		// väliltä, ts. esim. ]0,1[.
+		//
+		paluuarvo._evaluointiArvo = evaluoi();
+		return paluuarvo;
+	}
 
-	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
-	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
+	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s.
+	// Alustetaan paluuarvo huonoimmaksi mahdolliseksi siirto-
+	// vuoroisen pelaajan kannalta, jotta parempi siirto varmasti
+	// löytyy.
+	//
+	paluuarvo._evaluointiArvo = (_siirtovuoro == 0 ? -1000 : 1000);
+	for (auto s : siirrot)
+	{
+		// Seuraaja-asema (tehdään nykyisessä asemassa siirto s).
+		Asema uusi_asema = *this;
+		uusi_asema.paivitaAsema(&s);
 
+		// Rekursiivinen kutsu.
+		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1);
+
+		// Tutkitaan ollaan löydetty uusi paras siirto.
+		if
+			(
+			(_siirtovuoro == 0 && arvo._evaluointiArvo > paluuarvo._evaluointiArvo) ||
+				(_siirtovuoro == 1 && arvo._evaluointiArvo < paluuarvo._evaluointiArvo)
+				)
+		{
+			// Löydettiin uusi paras siirto.
+			paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
+			paluuarvo._parasSiirto = arvo._parasSiirto;
+		}
+	}
+
+	// Palautetaan paras löydetty siirto/minimax-arvo
 	return paluuarvo;
 }
 
