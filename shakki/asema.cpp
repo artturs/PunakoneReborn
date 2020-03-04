@@ -594,7 +594,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari) {
 		//lyhyt linna
 		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaKTliikkunut() == false) 
 		{
-			if (this->_lauta[5][0] == NULL && this->_lauta[6][0] == NULL) {
+			if ((this->_lauta[5][0] == NULL) && (this->_lauta[6][0] == NULL)) {
 				if (this->onkoRuutuUhattu(&Ruutu(4, 0), !vari) && this->onkoRuutuUhattu(&Ruutu(5, 0), !vari) 
 					&& this->onkoRuutuUhattu(&Ruutu(6, 0), !vari))
 				{
@@ -617,9 +617,9 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari) {
 	if(vari == 1)
 	{
 		//lyhyt linna
-		if (this->getOnkoMustaKuningasLiikkunut() == false && this->getOnkoMustaKTliikkunut() == false)
+		if ((this->getOnkoMustaKuningasLiikkunut() == false) && (this->getOnkoMustaKTliikkunut() == false))
 		{
-			if (this->_lauta[5][7] == NULL && this->_lauta[6][7] == NULL) {
+			if ((this->_lauta[5][7] == NULL) && (this->_lauta[6][7] == NULL)) {
 				if (this->onkoRuutuUhattu(&Ruutu(4, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(5, 7), !vari)
 					&& this->onkoRuutuUhattu(&Ruutu(6, 7), !vari))
 				{
@@ -628,7 +628,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari) {
 			}
 		}
 		//pitkä linna
-		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaDTliikkunut() == false)
+		if (this->getOnkoMustaKuningasLiikkunut() == false && this->getOnkoMustaDTliikkunut() == false)
 		{
 			if (this->_lauta[4][7] == NULL && this->_lauta[3][7] == NULL) {
 				if (this->onkoRuutuUhattu(&Ruutu(4, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(3, 7), !vari))
