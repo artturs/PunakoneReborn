@@ -347,8 +347,8 @@ double Asema::nappuloitaKeskella(int vari)
 	//sotilaat laitakeskustassa + 0.11/napa
 	//ratsut laitakeskustassa + 0.11/napa
 
-	//valkeille ydinkeskusta
 
+	//valkeille ydinkeskusta
 
 
 	//valkeille laitakeskusta
