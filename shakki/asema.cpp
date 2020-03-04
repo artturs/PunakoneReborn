@@ -136,7 +136,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		if (nappula->getKoodi() == VS && _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 		{
 			if (_lauta[loppuX][alkuY]->getKoodi() == MS) {
-				//std::wcout << "\n ohestalyönti\n";
+				std::wcout << "\n ohestalyönti\n";
 				_lauta[loppuX][alkuY] = NULL;
 			}
 		}
@@ -144,7 +144,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{
 			
 			if (_lauta[loppuX][alkuY]->getKoodi() == VS) {
-				//std::wcout << "\n ohestalyönti\n";
+				std::wcout << "\n ohestalyönti\n";
 				_lauta[loppuX][alkuY] = NULL;
 			}
 		}
@@ -197,12 +197,12 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 	}
 	//päivitetään _siirtovuoro
-	if (_siirtovuoro == 1) {
+	/*if (_siirtovuoro = 0) {
+		_siirtovuoro = 1;
+	}
+	else{
 		_siirtovuoro = 0;
-	}
-	else if (_siirtovuoro == 0) {
-		_siirtovuoro == 1;
-	}
+	}*/
 	
 }
 
@@ -515,7 +515,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 {
-	int kuningasX, kuningasY;
+	int kuningasX = NULL, kuningasY = NULL;
 	int kuninkaanVari;
 	list <Siirto> pareLista;
 	Asema tmpAs;

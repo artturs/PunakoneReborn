@@ -126,7 +126,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 	int nappulanvari = vari;
 		//asema->_lauta[x][y]->getVari();
 	// toisenvari siis loppuruudussa olevan nappulan väri
-	int toisenvari;
+	int toisenvari = NULL;
 	int xt, yt;
 	
 

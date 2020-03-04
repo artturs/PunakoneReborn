@@ -100,6 +100,7 @@ int main()
 	std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
+	int vastustajanVari = 0;
 
 
 	
@@ -114,7 +115,6 @@ int main()
 		
 		
 
-		
 		if (asema.getSiirtovuoro() != koneenVari) {
 			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 
@@ -133,7 +133,9 @@ int main()
 		asema.paivitaAsema(&siirto);
 		//wcout << "\Evaluaatio: " << asema.evaluoi() << "\n";
 		
-		asema.setSiirtovuoro(1);
+
+		if (asema.getSiirtovuoro() == koneenVari) { asema.setSiirtovuoro(vastustajanVari); }
+		else{ asema.setSiirtovuoro(koneenVari); }
 	}
 
 	return 0;
