@@ -140,7 +140,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 				_lauta[loppuX][alkuY] = NULL;
 			}
 		}
-		if (nappula->getKoodi() == MS || _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
+		if (nappula->getKoodi() == MS && _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 		{
 			
 			if (_lauta[loppuX][alkuY]->getKoodi() == VS) {
