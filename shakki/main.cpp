@@ -112,10 +112,11 @@ int main()
 		wcout << "\n";
 		Siirto siirto;
 		
-		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		
 
+		
 		if (asema.getSiirtovuoro() != koneenVari) {
-
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 
 			while (siirto.onkoMahdollinen() == false)
 			{
@@ -132,7 +133,7 @@ int main()
 		asema.paivitaAsema(&siirto);
 		//wcout << "\Evaluaatio: " << asema.evaluoi() << "\n";
 		
-
+		asema.setSiirtovuoro(1);
 	}
 
 	return 0;
