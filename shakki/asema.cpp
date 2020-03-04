@@ -197,12 +197,12 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 	}
 	//p‰ivitet‰‰n _siirtovuoro
-	if (_siirtovuoro = 0) {
+	/*if (_siirtovuoro = 0) {
 		_siirtovuoro = 1;
 	}
 	else{
 		_siirtovuoro = 0;
-	}
+	}*/
 	
 }
 
@@ -515,7 +515,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 {
-	int kuningasX, kuningasY;
+	int kuningasX = NULL, kuningasY = NULL;
 	int kuninkaanVari;
 	list <Siirto> pareLista;
 	Asema tmpAs;

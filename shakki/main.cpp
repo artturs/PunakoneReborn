@@ -100,6 +100,7 @@ int main()
 	std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
+	int vastustajanVari = 0;
 
 
 	
@@ -112,10 +113,10 @@ int main()
 		wcout << "\n";
 		Siirto siirto;
 		
-		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		
 
 		if (asema.getSiirtovuoro() != koneenVari) {
-
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 
 			while (siirto.onkoMahdollinen() == false)
 			{
@@ -133,6 +134,8 @@ int main()
 		//wcout << "\Evaluaatio: " << asema.evaluoi() << "\n";
 		
 
+		if (asema.getSiirtovuoro() == koneenVari) { asema.setSiirtovuoro(vastustajanVari); }
+		else{ asema.setSiirtovuoro(koneenVari); }
 	}
 
 	return 0;
