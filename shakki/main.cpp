@@ -92,7 +92,6 @@ int main()
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 	
-
 	
 
 	int lopetus = 100;
@@ -115,9 +114,18 @@ int main()
 		
 		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 
-		while (siirto.onkoMahdollinen() == false)
-		{
-			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		if (asema.getSiirtovuoro() != koneenVari) {
+
+
+			while (siirto.onkoMahdollinen() == false)
+			{
+				siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+			}
+		}
+		else {
+			double evaluaatio = asema.evaluoi();
+			MinMaxPaluu paluu = asema.minimax(2);
+			siirto = paluu._parasSiirto;
 		}
 		
 		

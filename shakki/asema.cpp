@@ -127,7 +127,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
 			// (asetetaan kaksoisaskel-lippu)
 			kaksoisaskelSarakkeella = alkuX;
-			std::wcout << "\n kaksoisaskelflag\n";
+			//std::wcout << "\n kaksoisaskelflag\n";
 		}
 
 
@@ -200,7 +200,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 	if (_siirtovuoro = 0) {
 		_siirtovuoro = 1;
 	}
-	if (_siirtovuoro = 1) {
+	else{
 		_siirtovuoro = 0;
 	}
 	
@@ -216,7 +216,7 @@ int Asema::getSiirtovuoro()
 
 void Asema::setSiirtovuoro(int vuoro)
 {
-
+	_siirtovuoro = vuoro;
 }
 
 
@@ -665,7 +665,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			
 		}
 	}
-	//this->annaLinnoitusSiirrot(lista, vari);
-	//this->huolehdiKuninkaanShakeista(lista, vari);
+	this->annaLinnoitusSiirrot(lista, vari);
+	this->huolehdiKuninkaanShakeista(lista, vari);
 
 }
