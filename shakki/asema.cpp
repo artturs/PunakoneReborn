@@ -32,21 +32,21 @@ Asema::Asema()
 	}
 	//std::cout << _lauta[10][10];
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	_lauta[0][1] = vs;
+	/*_lauta[0][1] = vs;
 	_lauta[1][1] = vs;
 	_lauta[2][1] = vs;
 	_lauta[3][1] = vs;
 	_lauta[4][1] = vs;
 	_lauta[5][1] = vs;
 	_lauta[6][1] = vs;
-	_lauta[7][1] = vs;
+	_lauta[7][1] = vs;*/
 	_lauta[0][0] = vt;
 	_lauta[1][0] = vr;
 	_lauta[2][0] = vl;
 	_lauta[3][0] = vd;
 	_lauta[4][0] = vk;
-	_lauta[5][0] = vl;
-	_lauta[6][0] = vr;
+	//_lauta[5][0] = vl;
+	//_lauta[6][0] = vr;
 	_lauta[7][0] = vt;
 
 	_lauta[0][6] = ms;
@@ -60,7 +60,8 @@ Asema::Asema()
 	_lauta[0][7] = mt;
 	_lauta[1][7] = mr;
 	_lauta[2][7] = ml;
-	_lauta[3][7] = md;
+	//_lauta[3][7] = md;
+	//_lauta[5][1] = md;
 	_lauta[4][7] = mk;
 	_lauta[5][7] = ml;
 	_lauta[6][7] = mr;
@@ -398,16 +399,69 @@ double Asema::linjat(int vari)
 MinMaxPaluu Asema::minimax(int syvyys)
 {
 	MinMaxPaluu paluuarvo;
+	
 
 	// Generoidaan aseman lailliset siirrot.
+	std::list<Siirto> siirrot;
+	annaLaillisetSiirrot(siirrot);
 
 	// Rekursion kantatapaus 1: peli on loppu
+	if (siirrot.size() == 0)
+	{
+
+		// *** TODO ***
+		//
+		// Laillisia siirtoja ei ole. Jos siirtovuoroisen pelaajan
+		// kuningas on uhattu, on h‰n h‰vinnyt (matti). Jos kuningas
+		// ei ole uhattu, on peli tasapeli (patti).
+		//
+		// Aseta sopiva paluuarvo (valkean voitto, mustan voitto, tasapeli),
+		// eli esim. 1, -1, tai 0.
+		//
+		paluuarvo._evaluointiArvo = 0;
+		return paluuarvo;
+	}
 
 	// Rekursion kantatapaus 2: katkaisusyvyydess‰
+	if (syvyys == 0)
+	{
+		// Pyydet‰‰n evaluointifunktion arvio nykyisest‰ asemasta.
+		// Evaluointifunktion arvojen pit‰‰ olla ‰‰rip‰iden (voitto, h‰viˆ)
+		// v‰lilt‰, ts. esim. ]0,1[.
+		//
+		paluuarvo._evaluointiArvo = evaluoi();
+		return paluuarvo;
+	}
 
-	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
-	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
+	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s.
+	// Alustetaan paluuarvo huonoimmaksi mahdolliseksi siirto-
+	// vuoroisen pelaajan kannalta, jotta parempi siirto varmasti
+	// lˆytyy.
+	//
+	paluuarvo._evaluointiArvo = (_siirtovuoro == 0 ? -1000 : 1000);
+	for (auto s : siirrot)
+	{
+		// Seuraaja-asema (tehd‰‰n nykyisess‰ asemassa siirto s).
+		Asema uusi_asema = *this;
+		uusi_asema.paivitaAsema(&s);
 
+		// Rekursiivinen kutsu.
+		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1);
+
+		// Tutkitaan ollaan lˆydetty uusi paras siirto.
+		if
+			(
+			(_siirtovuoro == 0 && arvo._evaluointiArvo > paluuarvo._evaluointiArvo) ||
+				(_siirtovuoro == 1 && arvo._evaluointiArvo < paluuarvo._evaluointiArvo)
+				)
+		{
+			// Lˆydettiin uusi paras siirto.
+			paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
+			paluuarvo._parasSiirto = arvo._parasSiirto;
+		}
+	}
+
+	// Palautetaan paras lˆydetty siirto/minimax-arvo
 	return paluuarvo;
 }
 
@@ -494,15 +548,35 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 		//Katsotaan onko siirretty nappula kuningas
 		Nappula* siirretty;
 		siirretty = this->_lauta[fiat.getAlkuruutu().getSarake()][fiat.getAlkuruutu().getRivi()];
-		
-		if (siirretty->getKoodi() == MK || siirretty->getKoodi() == VK) {
-			x = fiat.getLoppuruutu().getSarake();
-			y = fiat.getLoppuruutu().getRivi();
 
+
+		if (fiat.onkoLyhytLinna()) 
+		{
+			x = 6;
+			if (this->getSiirtovuoro() == 0)
+				y = 0;
+			else
+				y = 7;
 		}
-		else {
-			x = kuningasX;
-			y = kuningasY;
+		else if (fiat.onkoPitkaLinna())
+		{
+			x = 2;
+			if (this->getSiirtovuoro() == 0)
+				y = 0;
+			else
+				y = 7;
+		}
+		else
+		{
+			if (siirretty->getKoodi() == MK || siirretty->getKoodi() == VK) {
+				x = fiat.getLoppuruutu().getSarake();
+				y = fiat.getLoppuruutu().getRivi();
+
+			}
+			else {
+				x = kuningasX;
+				y = kuningasY;
+			}
 		}
 		if (tmpAs.onkoRuutuUhattu(&Ruutu(x, y), !vari) == true) {
 			pareLista.push_back(fiat);
@@ -510,10 +584,63 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 	}
 	lista = pareLista;
 	
+}
+
+void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari) {
+
+	//valkoinen
+	if (vari == 0) 
+	{
+		//lyhyt linna
+		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaKTliikkunut() == false) 
+		{
+			if (this->_lauta[5][0] == NULL && this->_lauta[6][0] == NULL) {
+				if (this->onkoRuutuUhattu(&Ruutu(4, 0), !vari) && this->onkoRuutuUhattu(&Ruutu(5, 0), !vari) 
+					&& this->onkoRuutuUhattu(&Ruutu(6, 0), !vari))
+				{
+					lista.push_back(Siirto(true, false, true)); // lis‰t‰‰n listaan lyhyt linna
+				}
+			}
+		}
+		//pitk‰ linna
+		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaDTliikkunut() == false)
+		{
+			if (this->_lauta[4][0] == NULL && this->_lauta[3][0] == NULL) {
+				if (this->onkoRuutuUhattu(&Ruutu(4, 0), !vari) && this->onkoRuutuUhattu(&Ruutu(3, 0), !vari))	
+				{
+					lista.push_back(Siirto(false, true, true)); // lis‰t‰‰n listaan pitk‰ linna
+				}
+			}
+		}
+	}
+	//musta
+	if(vari == 1)
+	{
+		//lyhyt linna
+		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaKTliikkunut() == false)
+		{
+			if (this->_lauta[5][7] == NULL && this->_lauta[6][7] == NULL) {
+				if (this->onkoRuutuUhattu(&Ruutu(4, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(5, 7), !vari)
+					&& this->onkoRuutuUhattu(&Ruutu(6, 7), !vari))
+				{
+					lista.push_back(Siirto(true, false, true)); // lis‰t‰‰n listaan lyhyt linna
+				}
+			}
+		}
+		//pitk‰ linna
+		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaDTliikkunut() == false)
+		{
+			if (this->_lauta[4][7] == NULL && this->_lauta[3][7] == NULL) {
+				if (this->onkoRuutuUhattu(&Ruutu(4, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(3, 7), !vari))
+				{
+					lista.push_back(Siirto(false, true, true)); // lis‰t‰‰n listaan pitk‰ linna
+				}
+			}
+		}
+	}
 
 
 }
-
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	
@@ -522,6 +649,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	
 
 	//kaikki mahd siirrot
+	annaLinnoitusSiirrot(lista, vari);
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
 			
