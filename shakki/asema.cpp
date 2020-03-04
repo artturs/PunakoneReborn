@@ -32,21 +32,21 @@ Asema::Asema()
 	}
 	//std::cout << _lauta[10][10];
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	/*_lauta[0][1] = vs;
+	_lauta[0][1] = vs;
 	_lauta[1][1] = vs;
 	_lauta[2][1] = vs;
 	_lauta[3][1] = vs;
 	_lauta[4][1] = vs;
 	_lauta[5][1] = vs;
 	_lauta[6][1] = vs;
-	_lauta[7][1] = vs;*/
+	_lauta[7][1] = vs;
 	_lauta[0][0] = vt;
 	_lauta[1][0] = vr;
 	_lauta[2][0] = vl;
 	_lauta[3][0] = vd;
 	_lauta[4][0] = vk;
-	//_lauta[5][0] = vl;
-	//_lauta[6][0] = vr;
+	_lauta[5][0] = vl;
+	_lauta[6][0] = vr;
 	_lauta[7][0] = vt;
 
 	_lauta[0][6] = ms;
@@ -60,8 +60,8 @@ Asema::Asema()
 	_lauta[0][7] = mt;
 	_lauta[1][7] = mr;
 	_lauta[2][7] = ml;
-	//_lauta[3][7] = md;
-	//_lauta[5][1] = md;
+	_lauta[3][7] = md;
+	_lauta[5][1] = vs;
 	_lauta[4][7] = mk;
 	_lauta[5][7] = ml;
 	_lauta[6][7] = mr;
@@ -123,7 +123,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		//tässä virhe, tai lauseitten takia
-		if (_lauta[alkuX][alkuY]->getKoodi() == MS && (alkuY - loppuY) == 2 || _lauta[alkuX][alkuY]->getKoodi() == VS &&  (loppuY - alkuY) == 2)
+		if (_lauta[alkuX][alkuY]->getKoodi() == MS && (alkuY - loppuY == 2))
 		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
 			// (asetetaan kaksoisaskel-lippu)
 			kaksoisaskelSarakkeella = alkuX;
@@ -222,13 +222,13 @@ void Asema::setSiirtovuoro(int vuoro)
 
 bool Asema::getOnkoValkeaKuningasLiikkunut()
 {
-	return false;
+	return _onkoValkeaKuningasLiikkunut;
 }
 
 
 bool Asema::getOnkoMustaKuningasLiikkunut()
 {
-	return false;
+	return _onkoMustaKuningasLiikkunut;
 }
 
 
@@ -246,13 +246,13 @@ bool Asema::getOnkoValkeaKTliikkunut()
 
 bool Asema::getOnkoMustaDTliikkunut()
 {
-	return false;
+	return _onkoMustaDTliikkunut;
 }
 
 
 bool Asema::getOnkoMustaKTliikkunut()
 {
-	return false;
+	return _onkoMustaKTliikkunut;
 }
 
 
@@ -665,6 +665,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			
 		}
 	}
-	
+	//this->annaLinnoitusSiirrot(lista, vari);
+	//this->huolehdiKuninkaanShakeista(lista, vari);
 
 }

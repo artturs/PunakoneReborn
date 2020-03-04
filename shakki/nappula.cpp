@@ -348,6 +348,14 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 				}
 			}
 		}
+		if (x < 7 && x > 0) {
+			if (asema->_lauta[x - 1][y + 1] != NULL) {
+				toisenvari = asema->_lauta[x - 1][y + 1]->getVari();
+				if (toisenvari != nappulanvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(x - 1, y + 1)));
+				}
+			}
+		}
 		//ohestalyönti valkea
 		if (vari == 0 && y == 4 && asema->kaksoisaskelSarakkeella != -1) {
 			
@@ -366,11 +374,19 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			lista.push_back(Siirto(*ruutu, Ruutu(x, y - 1)));
 		}
 		//syömisiä
-		if (x < 7) {
+		if (x < 7 && x > 0) {
 			if (asema->_lauta[x - 1][y - 1] != NULL) {
 				toisenvari = asema->_lauta[x - 1][y - 1]->getVari();
 				if (toisenvari != nappulanvari) {
 					lista.push_back(Siirto(*ruutu, Ruutu(x - 1, y - 1)));
+				}
+			}
+		}
+		if (x < 7) {
+			if (asema->_lauta[x + 1][y - 1] != NULL) {
+				toisenvari = asema->_lauta[x + 1][y - 1]->getVari();
+				if (toisenvari != nappulanvari) {
+					lista.push_back(Siirto(*ruutu, Ruutu(x + 1, y - 1)));
 				}
 			}
 		}
