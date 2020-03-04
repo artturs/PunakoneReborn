@@ -94,9 +94,9 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 		if(_siirtovuoro==1){
 			_lauta[4][7] = NULL;
-			_lauta[6][7] = vk;
+			_lauta[6][7] = mk;
 			_lauta[7][7] = NULL;
-			_lauta[5][7] = vt;
+			_lauta[5][7] = mt;
 		}
 	}
 	else if(siirto->onkoPitkaLinna()){
@@ -108,9 +108,9 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 		if (_siirtovuoro == 1) {
 			_lauta[4][7] = NULL;
-			_lauta[2][7] = vk;
+			_lauta[2][7] = mk;
 			_lauta[0][7] = NULL;
-			_lauta[3][7] = vt;
+			_lauta[3][7] = mt;
 		}
 	}
 	else { // Kaikki muut siirrot
@@ -617,7 +617,7 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari) {
 	if(vari == 1)
 	{
 		//lyhyt linna
-		if (this->getOnkoValkeaKuningasLiikkunut() == false && this->getOnkoValkeaKTliikkunut() == false)
+		if (this->getOnkoMustaKuningasLiikkunut() == false && this->getOnkoMustaKTliikkunut() == false)
 		{
 			if (this->_lauta[5][7] == NULL && this->_lauta[6][7] == NULL) {
 				if (this->onkoRuutuUhattu(&Ruutu(4, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(5, 7), !vari)
