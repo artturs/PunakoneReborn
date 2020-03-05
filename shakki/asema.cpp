@@ -115,7 +115,8 @@ void Asema::paivitaAsema(Siirto *siirto)
 	}
 	else { // Kaikki muut siirrot
 
-		//Ottaa siirron alkuruudussa olleen nappulan talteen		
+		//Ottaa siirron alkuruudussa olleen nappulan talteen	
+		if(alkuX > -1 && alkuY > -1){
 		Nappula* nappula = _lauta[alkuX][alkuY];
 
 		//Laittaa talteen otetun nappulan uuteen ruutuun
@@ -123,12 +124,15 @@ void Asema::paivitaAsema(Siirto *siirto)
 		
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		//tässä virhe, tai lauseitten takia
-		if (_lauta[alkuX][alkuY]->getKoodi() == MS && (alkuY - loppuY == 2))
-		{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
-			// (asetetaan kaksoisaskel-lippu)
-			kaksoisaskelSarakkeella = alkuX;
-			//std::wcout << "\n kaksoisaskelflag\n";
-		}
+		
+		
+			if (nappula->getKoodi() == MS)
+			{	//_lauta[alkuX][alkuY]->getKoodi() == MS || _lauta[alkuX][alkuY]->getKoodi() == VS && 
+				// (asetetaan kaksoisaskel-lippu)
+				kaksoisaskelSarakkeella = alkuX;
+				//std::wcout << "\n kaksoisaskelflag\n";
+			}
+		
 
 
 		// Ohestalyönti on tyhjään ruutuun. Vieressä oleva (sotilas) poistetaan.
@@ -203,7 +207,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 	else{
 		_siirtovuoro = 0;
 	}*/
-	
+	}
 }
 
 
@@ -272,11 +276,14 @@ vai olla estämässä vastustajan korotusta siksi ei oteta kantaa
 */
 double Asema::evaluoi()
 {
-	float evaluaatio = 0;
+	double evaluaatio = 0;
 	for (int x = 0; x < 8; x++)
 	{
-		for (int y = 0; y < 8; y++)
-		{
+		
+		for (int y = 0; y < 8; y++){
+
+			
+
 			if (this->_lauta[x][y] == NULL) {
 				continue;
 			}
@@ -285,12 +292,18 @@ double Asema::evaluoi()
 			}
 			if (this->_lauta[x][y]->getKoodi() == MS) {
 				evaluaatio--;
+				evaluaatio -= (x *((7 - x)*0.1));
+				if (y == 5) {
+					evaluaatio -= 60;
+				}if(x == 5){
+					evaluaatio -= 60;
+				}
 			}
 			if (this->_lauta[x][y]->getKoodi() == VR) {
 				evaluaatio += 3;
 			}
 			if (this->_lauta[x][y]->getKoodi() == MR) {
-				evaluaatio -= 3;
+				evaluaatio -= 90;
 			}
 			if (this->_lauta[x][y]->getKoodi() == VL) {
 				evaluaatio += 3.25;
@@ -312,6 +325,7 @@ double Asema::evaluoi()
 			}
 		}
 	}
+	wcout << "\n" << evaluaatio;
 	return evaluaatio;
 
 	
@@ -399,6 +413,8 @@ double Asema::linjat(int vari)
 MinMaxPaluu Asema::minimax(int syvyys)
 {
 	MinMaxPaluu paluuarvo;
+	Ruutu alustusRuutu(-1, -1);
+	Siirto alustusSiirto(alustusRuutu, alustusRuutu);
 	
 
 	// Generoidaan aseman lailliset siirrot.
@@ -449,16 +465,15 @@ MinMaxPaluu Asema::minimax(int syvyys)
 		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1);
 
 		// Tutkitaan ollaan löydetty uusi paras siirto.
-		if
-			(
+		if(
 			(_siirtovuoro == 0 && arvo._evaluointiArvo > paluuarvo._evaluointiArvo) ||
 				(_siirtovuoro == 1 && arvo._evaluointiArvo < paluuarvo._evaluointiArvo)
 				)
-		{
-			// Löydettiin uusi paras siirto.
-			paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
-			paluuarvo._parasSiirto = arvo._parasSiirto;
-		}
+			{
+				// Löydettiin uusi paras siirto.
+				paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
+				paluuarvo._parasSiirto = arvo._parasSiirto;
+			}
 	}
 
 	// Palautetaan paras löydetty siirto/minimax-arvo

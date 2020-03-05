@@ -1,5 +1,6 @@
 #include "siirto.h"
 
+
 Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu) {
 	this->_alkuRuutu = alkuRuutu;
 	this->_loppuRuutu = loppuRuutu;
