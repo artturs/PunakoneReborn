@@ -383,18 +383,64 @@ double Asema::linjat(int vari)
 
 }
 
+MinMaxPaluu Asema::MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta) {
 
-// https://chessprogramming.wikispaces.com/Minimax MinMax-algoritmin pseudokoodi (lisäsin parametrina aseman)
-//int maxi(int depth, asema a) 
-//	if (depth == 0) return evaluate();
-//	int max = -oo;
-//	for (all moves ) {
-//		score = mini(depth - 1, seuraaja);
-//		if (score > max)
-//			max = score;
-//	}
-//	return max;
-//}
+	MinMaxPaluu paluu;
+	std::list<Siirto> siirrot;
+	annaLaillisetSiirrot(siirrot);
+
+	if (siirrot.size() == 0) {
+		//paluu._evaluointiArvo = LoppuTulos();
+		//return paluu;
+	}
+
+	if (syvyys <= 0) {
+		paluu._evaluointiArvo = evaluoi();
+		return paluu;
+	}
+
+	paluu._evaluointiArvo = -INFINITY;
+
+	for (Siirto s : siirrot) {
+		Asema uusi = *this;
+		uusi.paivitaAsema(&s);
+		MinMaxPaluu arvo = uusi.MinAB(syvyys - 1, alpha, beta);
+		if (arvo._evaluointiArvo > paluu._evaluointiArvo) { paluu._parasSiirto = s; paluu._evaluointiArvo = arvo._evaluointiArvo; }
+		if (arvo._evaluointiArvo >= beta._evaluointiArvo) { return beta; }
+		if (arvo._evaluointiArvo > alpha._evaluointiArvo) { alpha._parasSiirto = s; alpha._evaluointiArvo = arvo._evaluointiArvo; }
+	}
+	return alpha;
+}
+
+MinMaxPaluu Asema::MinAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta) {
+
+	MinMaxPaluu paluu;
+	std::list<Siirto> siirrot;
+	annaLaillisetSiirrot(siirrot);
+
+
+	if (siirrot.size() == 0) {
+		//paluu._evaluointiArvo = LoppuTulos();
+		//return paluu;
+	}
+
+	if (syvyys <= 0) {
+		paluu._evaluointiArvo = evaluoi();
+		return paluu;
+	}
+
+	paluu._evaluointiArvo = +INFINITY;
+
+	for (Siirto s : siirrot) {
+		Asema uusi = *this;
+		uusi.paivitaAsema(&s);
+		MinMaxPaluu arvo = uusi.MaxAB(syvyys - 1, alpha, beta);
+		if (arvo._evaluointiArvo < paluu._evaluointiArvo) { paluu._parasSiirto = s; paluu._evaluointiArvo = arvo._evaluointiArvo; }
+		if (arvo._evaluointiArvo <= alpha._evaluointiArvo) { return alpha; }
+		if (arvo._evaluointiArvo < beta._evaluointiArvo) { beta._parasSiirto = s; beta._evaluointiArvo = arvo._evaluointiArvo; }
+	}
+	return beta;
+}
 
 //int mini(int depth, asema a) {
 //	if (depth == 0) return -evaluate();
@@ -406,7 +452,7 @@ double Asema::linjat(int vari)
 //	}
 //	return min;
 //}
-MinMaxPaluu Asema::minimax(int syvyys)
+MinMaxPaluu Asema::minimax(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta)
 {
 	MinMaxPaluu paluuarvo;
 	
@@ -450,6 +496,9 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	// vuoroisen pelaajan kannalta, jotta parempi siirto varmasti
 	// löytyy.
 	//
+	paluuarvo._evaluointiArvo = +INFINITY;
+
+
 	paluuarvo._evaluointiArvo = (_siirtovuoro == 0 ? -1000 : 1000);
 	for (auto s : siirrot)
 	{
@@ -458,7 +507,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 		uusi_asema.paivitaAsema(&s);
 
 		// Rekursiivinen kutsu.
-		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1);
+		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1, alpha, beta);
 
 		// Tutkitaan ollaan löydetty uusi paras siirto.
 		if
@@ -471,10 +520,15 @@ MinMaxPaluu Asema::minimax(int syvyys)
 			paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
 			paluuarvo._parasSiirto = s;
 		}
+		if (arvo._evaluointiArvo <= alpha._evaluointiArvo) { return alpha; }
+
+		if (arvo._evaluointiArvo < beta._evaluointiArvo) 
+		{ beta._parasSiirto = s; beta._evaluointiArvo = arvo._evaluointiArvo; }
+
 	}
 
 	// Palautetaan paras löydetty siirto/minimax-arvo
-	return paluuarvo;
+	return beta;
 }
 
 
