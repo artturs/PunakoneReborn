@@ -11,13 +11,12 @@ class Nappula;
 class Siirto
 {
 public:
-
 	Siirto(Ruutu, Ruutu);
 	Siirto() {
 		_alkuRuutu = Ruutu(-1, -1);
 		_loppuRuutu = Ruutu(-1, -1);
-		_pitkaLinna = false;
 		_lyhytLinna = false;
+		_pitkaLinna = false;
 	}
 	Siirto(bool, bool, bool); // Linnoitus lyhesti (K-siipi) tai pitkästi (D-siipi)?
 	Ruutu getAlkuruutu();
