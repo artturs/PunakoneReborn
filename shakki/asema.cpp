@@ -144,7 +144,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			if (nappula->getKoodi() == VS && _lauta[loppuX][alkuY] != NULL && _lauta[loppuX][loppuY] == NULL && alkuX != loppuX)
 			{
 				if (_lauta[loppuX][alkuY]->getKoodi() == MS) {
-					std::wcout << "\n ohestalyönti\n";
+					//std::wcout << "\n ohestalyönti\n";
 					_lauta[loppuX][alkuY] = NULL;
 				}
 			}
@@ -152,7 +152,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			{
 
 				if (_lauta[loppuX][alkuY]->getKoodi() == VS) {
-					std::wcout << "\n ohestalyönti\n";
+					//std::wcout << "\n ohestalyönti\n";
 					_lauta[loppuX][alkuY] = NULL;
 				}
 			}

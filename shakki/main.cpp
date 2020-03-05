@@ -105,23 +105,21 @@ int main()
 
 	
 	while (true) {
+		system("cls");
 		
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		asema.annaLaillisetSiirrot(lista);
-		printAllAvailableMoves(lista, asema);
+		//printAllAvailableMoves(lista, asema);
 		wcout << "\n";
 		Siirto siirto;
 		
 		
 
 		if (asema.getSiirtovuoro() != koneenVari) {
-			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-
-			while (siirto.onkoMahdollinen() == false)
-			{
-				siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-			}
+			double evaluaatio = asema.evaluoi();
+			MinMaxPaluu paluu = asema.minimax(2);
+			siirto = paluu._parasSiirto;
 		}
 		else {
 			double evaluaatio = asema.evaluoi();
