@@ -91,7 +91,10 @@ int main()
 {
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
-	
+	MinMaxPaluu a;
+	MinMaxPaluu b;
+	a._evaluointiArvo = -INFINITY;
+	b._evaluointiArvo = +INFINITY;
 	
 
 	int lopetus = 100;
@@ -118,12 +121,12 @@ int main()
 
 		if (asema.getSiirtovuoro() != koneenVari) {
 			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.minimax(2);
+			MinMaxPaluu paluu = asema.MaxAB(5, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		else {
 			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.minimax(3);
+			MinMaxPaluu paluu = asema.MaxAB(5, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		
