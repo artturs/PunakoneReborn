@@ -123,7 +123,7 @@ int main()
 		}
 		else {
 			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.minimax(2);
+			MinMaxPaluu paluu = asema.minimax(3);
 			siirto = paluu._parasSiirto;
 		}
 		

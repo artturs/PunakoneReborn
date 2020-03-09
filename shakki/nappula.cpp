@@ -333,7 +333,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			{
 				lista.push_back(Siirto(*ruutu, Ruutu(x, y + 1)));
 			}
-			else
+			else if(y == 6)
 			{
 				lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x, y + 1)), lista, asema);
 			}
@@ -343,16 +343,22 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		if (x < 7) {
 			if (asema->_lauta[x + 1][y + 1] != NULL) {
 				toisenvari = asema->_lauta[x + 1][y + 1]->getVari();
-				if (toisenvari != nappulanvari) {
+				if (toisenvari != nappulanvari && y != 6) {
 						lista.push_back(Siirto(*ruutu, Ruutu(x + 1, y + 1)));
+				}
+				else if (y == 6) {
+					lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x + 1, y + 1)), lista, asema);
 				}
 			}
 		}
-		if (x < 7 && x > 0) {
+		if (x <= 7 && x > 0) {
 			if (asema->_lauta[x - 1][y + 1] != NULL) {
 				toisenvari = asema->_lauta[x - 1][y + 1]->getVari();
-				if (toisenvari != nappulanvari) {
+				if (toisenvari != nappulanvari && y != 6) {
 					lista.push_back(Siirto(*ruutu, Ruutu(x - 1, y + 1)));
+				}
+				else if (y == 6) {
+					lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x - 1, y + 1)), lista, asema);
 				}
 			}
 		}
@@ -367,29 +373,36 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		
 	}
 	//mustien siirtoja 
-	if (y > 1 && y < 7 && nappulanvari == 1) {
+	if (y >= 1 && y < 7 && nappulanvari == 1) {
 		//siirrot yks eteenpäin, checkataan onko tiellä jotain
-		if (asema->_lauta[x][y - 1] == NULL) {
+		if (asema->_lauta[x][y - 1] == NULL && x != 1) {
 
 			lista.push_back(Siirto(*ruutu, Ruutu(x, y - 1)));
 		}
 		//syömisiä
-		if (x < 7 && x > 0) {
+		if (x < 7 && x >= 1) {
 			if (asema->_lauta[x - 1][y - 1] != NULL) {
 				toisenvari = asema->_lauta[x - 1][y - 1]->getVari();
-				if (toisenvari != nappulanvari) {
+				if (toisenvari != nappulanvari && y != 1) {
 					lista.push_back(Siirto(*ruutu, Ruutu(x - 1, y - 1)));
 				}
-			}
-		}
-		if (x < 7) {
-			if (asema->_lauta[x + 1][y - 1] != NULL) {
-				toisenvari = asema->_lauta[x + 1][y - 1]->getVari();
-				if (toisenvari != nappulanvari) {
-					lista.push_back(Siirto(*ruutu, Ruutu(x + 1, y - 1)));
+				else if (y == 1) {
+					lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x - 1, y - 1)), lista, asema);
 				}
 			}
 		}
+		if (x < 7 && x >= 1) {
+			if (asema->_lauta[x + 1][y - 1] != NULL) {
+				toisenvari = asema->_lauta[x + 1][y - 1]->getVari();
+				if (toisenvari != nappulanvari && y != 1) {
+					lista.push_back(Siirto(*ruutu, Ruutu(x + 1, y - 1)));
+				}
+				else if (y == 1) {
+					lisaaSotilaanKorotukset(&Siirto(*ruutu, Ruutu(x + 1, y - 1)), lista, asema);
+				}
+			}
+		}
+		
 		//ohestalyönti musta
 		if (vari == 1 && y == 3 && asema->kaksoisaskelSarakkeella != -1) {
 			if (asema->_lauta[asema->kaksoisaskelSarakkeella][4] && asema->_lauta[asema->kaksoisaskelSarakkeella][4]->getKoodi() == VS)
@@ -397,6 +410,8 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 		}
 
 	}
+	//musta korotus
+	
 }
 
 
