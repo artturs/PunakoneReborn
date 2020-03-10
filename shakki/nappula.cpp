@@ -5,6 +5,7 @@
 #include "nappula.h"
 using namespace std;
 
+#pragma optimize("g", on)
 
 Nappula::Nappula(wstring unicode, int vari, int koodi)
 {

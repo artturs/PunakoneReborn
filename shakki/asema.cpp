@@ -1,4 +1,6 @@
 #include <iostream>
+#include <windows.h>
+#include <ppl.h>
 #include "asema.h"
 #include "minMaxPaluu.h"
 #include "nappula.h"
@@ -716,7 +718,10 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 
 	//kaikki mahd siirrot
 	annaLinnoitusSiirrot(lista, vari);
-	for (int x = 0; x < 8; x++) {
+
+	//for (int x = 0; x < 8; x++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t x)
+	{
 		for (int y = 0; y < 8; y++) {
 			
 			if (this->_lauta[x][y] == NULL) {
@@ -730,7 +735,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			this->_lauta[x][y]->annaSiirrot(lista, &Ruutu(x, y), this, vari);
 			
 		}
-	}
+	});
 	this->annaLinnoitusSiirrot(lista, vari);
 	this->huolehdiKuninkaanShakeista(lista, vari);
 

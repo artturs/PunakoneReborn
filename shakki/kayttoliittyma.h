@@ -1,4 +1,5 @@
 #pragma once
+#pragma optimize("g", on)
 #include "asema.h"
 #include "nappula.h"
 #include "peli.h"

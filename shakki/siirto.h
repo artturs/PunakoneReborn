@@ -1,4 +1,5 @@
 #pragma once
+#pragma optimize("g", on)
 #include "ruutu.h"
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
