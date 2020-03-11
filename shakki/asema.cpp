@@ -172,6 +172,9 @@ void Asema::paivitaAsema(Siirto *siirto)
 			////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittymän laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 			_lauta[loppuX][loppuY] = nappula;
 			_lauta[alkuX][alkuY] = NULL;
+			if (siirto->_miksikorotetaan != NULL) {
+				_lauta[loppuX][loppuY] = siirto->_miksikorotetaan;
+			}
 
 			//
 			////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta lähtenyt nappula
@@ -278,11 +281,11 @@ vai olla estämässä vastustajan korotusta siksi ei oteta kantaa
 3. Arvosta keskustaa sotilailla ja ratsuilla
 4. Arvosta pitkiä linjoja daami, torni ja lähetti
 */
-double Asema::evaluoi()
+int Asema::evaluoi()
 {
 
 	
-	float evaluaatio = 0;
+	int evaluaatio = 0;
 	for (int x = 0; x < 8; x++)
 	{
 		for (int y = 0; y < 8; y++)
@@ -291,10 +294,10 @@ double Asema::evaluoi()
 				continue;
 			}
 			if (this->_lauta[x][y]->getKoodi() == VS) {
-				evaluaatio++;
+				evaluaatio += 1;
 			}
 			if (this->_lauta[x][y]->getKoodi() == MS) {
-				evaluaatio--;
+				evaluaatio -= 1;
 			}
 			if (this->_lauta[x][y]->getKoodi() == VR) {
 				evaluaatio += 3;
@@ -303,10 +306,10 @@ double Asema::evaluoi()
 				evaluaatio -= 3;
 			}
 			if (this->_lauta[x][y]->getKoodi() == VL) {
-				evaluaatio += 3.25;
+				evaluaatio += 3;
 			}
 			if (this->_lauta[x][y]->getKoodi() == ML) {
-				evaluaatio -= 3.25;
+				evaluaatio -= 3;
 			}
 			if (this->_lauta[x][y]->getKoodi() == VT) {
 				evaluaatio += 5;
@@ -320,6 +323,13 @@ double Asema::evaluoi()
 			if (this->_lauta[x][y]->getKoodi() == MD) {
 				evaluaatio -= 9;
 			}
+			//keskusta
+			/*if (this->_lauta[x][y]->getKoodi() == VS || this->_lauta[x][y]->getKoodi() == VR) {
+				if ((x == 3 || x == 4) && (y == 3 || y == 4)) {
+					evaluaatio += 0.5;
+				}
+				
+			}*/
 		}
 	}
 	return evaluaatio;

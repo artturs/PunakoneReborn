@@ -86,6 +86,7 @@ public:
 					lista.push_back(Siirto(*ruutu, Ruutu(_uusiX, _uusiY)));
 					return 0;
 				}
+				
 			}
 
 			
