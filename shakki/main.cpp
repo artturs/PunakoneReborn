@@ -122,12 +122,12 @@ int main()
 
 		if (asema.getSiirtovuoro() != koneenVari) {
 			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MinAB(7, a, b);
+			MinMaxPaluu paluu = asema.MinAB(6, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		else {
 			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MaxAB(7, a, b);
+			MinMaxPaluu paluu = asema.MaxAB(6, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		
