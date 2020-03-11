@@ -8,6 +8,7 @@
 #include "kayttoliittyma.h"
 #include "siirto.h"
 #include "asema.h"
+#pragma optimize("g", on)
 
 using namespace std;
 std::string getFileContents(std::ifstream&);

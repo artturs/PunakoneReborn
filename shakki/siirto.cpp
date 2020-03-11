@@ -1,5 +1,6 @@
 #include "siirto.h"
 
+#pragma optimize("g", on)
 
 Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu) {
 	this->_alkuRuutu = alkuRuutu;

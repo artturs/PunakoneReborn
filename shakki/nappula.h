@@ -1,4 +1,5 @@
 #pragma once
+#pragma optimize("g", on)
 
 #include <list>
 #include <string>

@@ -9,6 +9,7 @@
 #include "Siirto.h"
 #include "asema.h"
            
+#pragma optimize("g", on)
 
 using namespace std;
 void printAllAvailableMoves(list<Siirto> lista, Asema asema)
@@ -120,13 +121,13 @@ int main()
 		
 
 		if (asema.getSiirtovuoro() != koneenVari) {
-			//int evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MaxAB(3, a, b);
+			double evaluaatio = asema.evaluoi();
+			MinMaxPaluu paluu = asema.MinAB(7, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		else {
-			//int evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MinAB(3, a , b);
+			double evaluaatio = asema.evaluoi();
+			MinMaxPaluu paluu = asema.MaxAB(7, a, b);
 			siirto = paluu._parasSiirto;
 		}
 		
