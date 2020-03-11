@@ -1,21 +1,16 @@
 #include <Windows.h>
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <fcntl.h>
 #include <io.h>
-#include <string>
+#include <iostream>
 #include "kayttoliittyma.h"
-#include "siirto.h"
-#include "asema.h"
-#pragma optimize("g", on)
 
 using namespace std;
-std::string getFileContents(std::ifstream&);
+
+
 Kayttoliittyma* Kayttoliittyma::instance = 0;
 
-string secret = "up-up-down-down-<->-<->-B-A";
-wstring konami(secret.begin(), secret.end());
 
 Kayttoliittyma* Kayttoliittyma::getInstance()
 {
@@ -24,24 +19,12 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 	return instance;
 }
 
+
 void Kayttoliittyma::piirraLauta()
 {
-	if (first) 
-	{
-		std::ifstream Reader("TEXT.txt");             //Open file
-		std::string Art = getFileContents(Reader);       //Get file
-		std::cout << Art << std::endl;               //Print it to the screen
-		Reader.close();                           //Close file
-
-		first = false;
-	}
-
-
-
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//Saa unicode shakkinappulat toimimaan printf kanssa:
-	//SetConsoleOutputCP(65001);
+	SetConsoleOutputCP(65001);
 	//printf(q);
 	//char q[] = "King: \xE2\x99\x94.\n";
 
@@ -54,84 +37,105 @@ void Kayttoliittyma::piirraLauta()
 		ja tulostetaan se muussa tapauksessa tulostetaan 2 tyhjää välilyöntiä.
 		Parillisuuteen perustuen värjätään jokatoisen "ruudun" taustaväri
 	*/
-	int color = 0;
-
-	for (int j = 7; j >= 0; j--)
-	{
-		std::wcout << j + 1;
-
-
-		for (int i = 0; i < 8; i++, color++)
-		{
-			if (color % 2 == 0) {
-				SetConsoleTextAttribute(console, BACKGROUND_INTENSITY | BACKGROUND_RED |
+	for (int i = 7; i >= 0; i--) {
+		for (int j = 0; j < 8; j++) {
+			if (j == 0 && i == 7) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
 					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 8;
+			}
+			if (j == 0 && i == 6) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 7;
+			}
+			if (j == 0 && i == 5) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 6;
+			}
+			if (j == 0 && i == 4) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 5;
+			}
+			if (j == 0 && i == 3) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 4;
+			}
+			if (j == 0 && i == 2) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 3;
+			}
+			if (j == 0 && i == 1) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 2;
+			}
+			if (j == 0 && i == 0) {
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+					BACKGROUND_GREEN | BACKGROUND_BLUE);
+				wcout << 1;
+			}
+			if (i % 2 != 0) {
+				if (j % 2 == 0)
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+						BACKGROUND_GREEN | BACKGROUND_BLUE);
+				else
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_GREEN | BACKGROUND_RED);
 			}
 			else {
-				SetConsoleTextAttribute(console, BACKGROUND_INTENSITY);
+				if (j % 2 != 0)
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED |
+						BACKGROUND_GREEN | BACKGROUND_BLUE);
+				else
+					SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_GREEN | BACKGROUND_RED);
 			}
-			if (_asema->_lauta[i][j] != NULL) {
-				std::wstring nimi = _asema->_lauta[i][j]->getUnicode();
-				std::wcout << nimi;
+
+			/*wcout << "|";*/
+			if (_asema->_lauta[j][i] != NULL) {
+				wcout << " " << _asema->_lauta[j][i]->getUnicode() << " ";
 			}
 			else {
-				std::wcout << " ";
+				wcout << "   ";
 			}
+			/*if (j == 7)
+				wcout << "|";*/
 		}
-
-		color++;
-
-		std::wcout << "\n";
-		SetConsoleTextAttribute(console, BACKGROUND_INTENSITY);
+		wcout << "\n";
 	}
-	std::wcout << " ABCDEFGH";
-
-
+	wcout << "  " << "a " << " b " << " c " << " d " << " e " << " f " << " g " << " h \n";
 }
-Siirto Kayttoliittyma::annaVastustajanSiirto() {
+
+
+/*
+	Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on
+	muodollisesti korrekti (ei tarkista aseman laillisuutta)
+	Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
+*/
+Siirto Kayttoliittyma::annaVastustajanSiirto()
+{
 	int lahtoX;
 	int lahtoY;
-	int loppuX;
-	int loppuY;
-	wcout << "Anna siirtosi. Esim: Lf1-c4\n";
-	wcin >> siirtoString;
+	int tuloX;
+	int tuloY;
+	std::wstring siirtoString;
+	std::wstring siirtynytNappulaString;
 
-	while (true) {
-		/* if (siirtoString == konami) {
-			for (int i = 0; i < 8; i++)
-			{
-				for (int j = 0; j < 8; j++)
-				{
-					if (_asema->_lauta[i][j] != NULL) 
-					{
-						if(_asema->_lauta[i][j]->getVari == )
-						_asema->_lauta[i][j] = NULL;
-					}
-					
-				}
-			}
-		}
-		*/
-
-		if (siirtoString == L"0-0" || siirtoString == L"0-0-0")
-		{
+	do
+	{
+		wcout << "Anna siirtosi esim. (esim. Rg1-f3, linnoitus 0-0 tai 0-0-0)\n";
+		wcin >> siirtoString;
+		if (siirtoString == L"0-0" || siirtoString == L"0-0-0") {
 			if (siirtoString == L"0-0") {
-				return Siirto(true, false, true);
-				break;
+				return Siirto(true, false);
 			}
 			if (siirtoString == L"0-0-0") {
-				return Siirto(false, true, true);
-				break;
+				return Siirto(false, true);
 			}
 		}
-		if (siirtoString.length() < 4) {
-			wcout << "\nAntamasi siirto on väärää muotoa\n";
-			return Siirto(false, false, false);
-		}
-
-
-		
-
 		else if (siirtoString.length() == 6) {
 			siirtynytNappulaString = siirtoString[0];
 			siirtoString.erase(0, 1);
@@ -139,35 +143,24 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 		else {
 			siirtynytNappulaString = L"s";
 		}
+		lahtoX = siirtoString[0] - 'a';
+		lahtoY = siirtoString[1] - '1';
+		tuloX = siirtoString[3] - 'a';
+		tuloY = siirtoString[4] - '1';
 
-		try { lahtoX = siirtoString[0] - 'a'; }
-		catch(...) { lahtoX = 100; }
-		try { loppuX = siirtoString[3] - 'a'; }
-		catch (...) { loppuX = 100; }
-		try { lahtoY = siirtoString[1] - '1'; }
-		catch(...){ lahtoY = 100; }
-		try { loppuY = siirtoString[4] - '1'; }
-		catch (...) { loppuY = 100; }
+		if (((lahtoX < 0 || lahtoX >7) || (lahtoY < 0 || lahtoY > 7)) || ((tuloX < 0 || tuloX >7) || (tuloY < 0 || tuloY > 7)))
+			wcout << "Siirron täytyy olla muotoa esim. Rf1-f3,\n aakkoset väliltä a-h\n numerot väliltä 1-8,\n Nappula on (K,k),(D,d),(T,t),(R,r),(L,l)\n sotilas jätetään merkitsemättä\n";
+	} while (((lahtoX < 0 || lahtoX >7) || (lahtoY < 0 || lahtoY > 7)) || ((tuloX < 0 || tuloX >7) || (tuloY < 0 || tuloY > 7)));
 
-		if (lahtoX > 7 || lahtoX < 0 || lahtoY > 7 || lahtoY < 0 || loppuX > 7 || loppuX < 0 || loppuY > 7 || loppuY < 0) {
-			wcout << "\nAntamasi siirto on väärää muotoa\n";
-			return Siirto(false, false, false);
-		}
-		else {
-			break;
-		}
-	}
-
-	
 	Ruutu lahtoRuutu(lahtoX, lahtoY);
-	Ruutu loppuRuutu(loppuX, loppuY);
-	Siirto siirto(lahtoRuutu, loppuRuutu);
-
+	Ruutu tuloRuutu(tuloX, tuloY);
+	Siirto siirto(lahtoRuutu, tuloRuutu);
+	//katsotaan onko kyseessä sotilaan korotus
 	std::wstring korotettuNappula;
-	if (siirtynytNappulaString == L"s" && (loppuY == 0 || loppuY == 7)) {
+	if (siirtynytNappulaString == L"s" && (tuloY == 0 || tuloY == 7)) {
 		std::wcout << "Miksi nappulaksi haluat korottaa? (esim. D)\n";
 		std::wcin >> korotettuNappula;
-		if (loppuY == 7) {
+		if (tuloY == 7) {
 			if (korotettuNappula == L"D" || korotettuNappula == L"d") {
 				siirto._miksikorotetaan = _asema->vd;
 			}
@@ -182,7 +175,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 			}
 		}
 
-		if (loppuY == 0) {
+		if (tuloY == 0) {
 			if (korotettuNappula == L"D" || korotettuNappula == L"d") {
 				siirto._miksikorotetaan = _asema->md;
 			}
@@ -199,40 +192,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto() {
 	}
 
 	return siirto;
-		
 
-
-
-
-	
 }
+
+
 int Kayttoliittyma::kysyVastustajanVari()
 {
-	return 0;
+	int vari;
+	wcout << "Haluatko pelata valkeilla (0) vai mustilla (1)?";
+	cin >> vari;
+	return vari;
 }
-
-
-std::string getFileContents(std::ifstream& File)
-{
-	std::string Lines = "";        //All lines
-
-	if (File)                      //Check if everything is good
-	{
-		while (File.good())
-		{
-			std::string TempLine;                  //Temp line
-			std::getline(File, TempLine);        //Get temp line
-			TempLine += "\n";                      //Add newline character
-
-			Lines += TempLine;                     //Add newline
-		}
-		return Lines;
-	}
-	else                           //Return error
-	{
-		return "ERROR File does not exist.";
-	}
-}
-
-
-;

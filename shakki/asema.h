@@ -1,5 +1,5 @@
 #pragma once
-#pragma optimize("g", on)
+
 #include <list>
 #include <string>
 #include "minmaxpaluu.h"
@@ -36,9 +36,9 @@ public:
 	double evaluoi();										// Aseman numeerinen arviointi.
 	MinMaxPaluu maxi(int syvyys);							// Minimax (max:n siirtovuoro).
 	MinMaxPaluu mini(int syvyys);							// Minimax (min:n siirtovuoro).
-	MinMaxPaluu minimax(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta);	// Minimax-algoritmi.
+	MinMaxPaluu minimax(int syvyys);
 	MinMaxPaluu MinAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta);	// AlphaBeta-Min-algoritmi.
-	MinMaxPaluu MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta); // AlphaBeta-Max-algoritmi.
+	MinMaxPaluu MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta); // Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.

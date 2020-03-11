@@ -3,143 +3,60 @@
 #include <io.h>
 #include <fcntl.h>
 #include <iostream>
-#include <fstream>
 #include <string>
 #include "kayttoliittyma.h"
-#include "Siirto.h"
+#include "siirto.h"
 #include "asema.h"
-           
-#pragma optimize("g", on)
 
 using namespace std;
-void printAllAvailableMoves(list<Siirto> lista, Asema asema)
-{
-	char xCoordInCharAlku;
-	char xCoordInCharLoppu;
 
-	wcout << "\n\nMahdolliset siirrot:(" << lista.size() << "kpl)\n";
-
-	for (auto v : lista)
-	{
-		if (v.onkoLyhytLinna()) { wcout << "\n lyhyt linna"; continue; }
-		if (v.onkoPitkaLinna()) { wcout << "\n pitkä linna"; continue; }
-
-		switch (v.getAlkuruutu().getSarake()) {
-		case 0:
-			xCoordInCharAlku = 'a';
-			break;
-		case 1:
-			xCoordInCharAlku = 'b';
-			break;
-		case 2:
-			xCoordInCharAlku = 'c';
-			break;
-		case 3:
-			xCoordInCharAlku = 'd';
-			break;
-		case 4:
-			xCoordInCharAlku = 'e';
-			break;
-		case 5:
-			xCoordInCharAlku = 'f';
-			break;
-		case 6:
-			xCoordInCharAlku = 'g';
-			break;
-		case 7:
-			xCoordInCharAlku = 'h';
-			break;
-		default:
-			xCoordInCharAlku = '-';
-		}
-
-		switch (v.getLoppuruutu().getSarake()) {
-		case 0:
-			xCoordInCharLoppu = 'a';
-			break;
-		case 1:
-			xCoordInCharLoppu = 'b';
-			break;
-		case 2:
-			xCoordInCharLoppu = 'c';
-			break;
-		case 3:
-			xCoordInCharLoppu = 'd';
-			break;
-		case 4:
-			xCoordInCharLoppu = 'e';
-			break;
-		case 5:
-			xCoordInCharLoppu = 'f';
-			break;
-		case 6:
-			xCoordInCharLoppu = 'g';
-			break;
-		case 7:
-			xCoordInCharLoppu = 'h';
-			break;
-		default:
-			xCoordInCharLoppu = '-';
-		}
-
-		std::wcout << "\n(" << xCoordInCharAlku << v.getAlkuruutu().getRivi() + 1 << "-" << xCoordInCharLoppu << v.getLoppuruutu().getRivi() + 1 << ")";
-	}
-	
-
-
-}
 int main()
 {
+	wcout << "HeippariShakki\n";
+	wcout << "Tervetuloa pelaamaan!\n";
+
+	int lopetus = 100;
 	Asema asema;
 	Kayttoliittyma::getInstance()->aseta_asema(&asema);
 	MinMaxPaluu a;
 	MinMaxPaluu b;
 	a._evaluointiArvo = -INFINITY;
 	b._evaluointiArvo = +INFINITY;
-	
-
-	int lopetus = 100;
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
 	std::list<Siirto> lista;
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
-	int vastustajanVari = 0;
 
-
-	
-	while (true) {
-		system("cls");
-		
+	while (lopetus != 0) {
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
-		asema.annaLaillisetSiirrot(lista);
-		//printAllAvailableMoves(lista, asema);
 		wcout << "\n";
+		// Tarkasta onko peli loppu?
+		asema.annaLaillisetSiirrot(lista);
+		if (lista.size() == 0) {
+			lopetus = 0;
+			std::wcout << "Peli loppui";
+			continue;
+		}
 		Siirto siirto;
-		
-		
-
-		if (asema.getSiirtovuoro() != koneenVari) {
-			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MinAB(6, a, b);
+		if (asema.getSiirtovuoro() == koneenVari) {
+			MinMaxPaluu paluu;
+			if (koneenVari == 0) {
+				paluu = asema.MaxAB(3, a, b);
+			}
+			else {
+				paluu = asema.MinAB(3, a, b);
+			}
 			siirto = paluu._parasSiirto;
 		}
 		else {
-			double evaluaatio = asema.evaluoi();
-			MinMaxPaluu paluu = asema.MaxAB(6, a, b);
-			siirto = paluu._parasSiirto;
+			siirto = Kayttoliittyma::getInstance()->
+				annaVastustajanSiirto();
 		}
-		
-		
 		asema.paivitaAsema(&siirto);
-		//wcout << "\Evaluaatio: " << asema.evaluoi() << "\n";
-		
-
-		if (asema.getSiirtovuoro() == koneenVari) { asema.setSiirtovuoro(vastustajanVari); }
-		else{ asema.setSiirtovuoro(koneenVari); }
 	}
+
 
 	return 0;
 }
-
