@@ -716,7 +716,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
 	std::list<Siirto> vastustajaSiirrotLista;
 	//Väreittäin käydään läpi kaikki ruudut ja niissä olevan nappulan siirrot kerätään vastustajan siirtolistaan
-	for (int i = 0; i < 8; i++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i){
 		for (int j = 0; j < 8; j++) {
 			if (this->_lauta[i][j] == NULL) {
 				continue;
@@ -724,7 +724,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 			if (this->_lauta[i][j]->getVari() == vastustajanVari)
 				this->_lauta[i][j]->annaSiirrot(vastustajaSiirrotLista, &Ruutu(i, j), this, vastustajanVari); // myöh.sidonta
 		}
-	}
+	});
 	// Käydään vastustajaSiirtoLista läpi ja jos sieltä löytyy tarkasteltava ruutu niin tiedetään sen olevan uhattu
 	bool ruutuOk = true;
 	for (auto s : vastustajaSiirrotLista)
@@ -746,7 +746,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 	int kuninkaanX;
 	int kuninkaanY;
 	if (vari == 0) {
-		for (int i = 0; i < 8; i++) {
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
 			for (int j = 0; j < 8; j++) {
 				if (this->_lauta[i][j] == NULL)
 					continue;
@@ -756,10 +756,10 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 					break;
 				}
 			}
-		}
+		});
 	}
 	if (vari == 1) {
-		for (int i = 0; i < 8; i++) {
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
 			for (int j = 0; j < 8; j++) {
 				if (this->_lauta[i][j] == NULL)
 					continue;
@@ -769,7 +769,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 					break;
 				}
 			}
-		}
+		});
 	}
 	// Jotta ei jouduta perumaan oikeaan asemaan tehtyä siirtoa
 	Asema testiAsema;
