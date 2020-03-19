@@ -10,6 +10,7 @@ Nappula::Nappula(wstring unicode, int vari, int koodi)
 	_unicode = unicode;
 	_vari = vari;
 	_koodi = koodi;
+
 }
 
 
@@ -102,17 +103,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 			}
 		}
 	}
-	// testausta varten
-	// Huom. uuden standardin mukaista c++ koodia, auto-m‰‰re antaa k‰‰nt‰j‰n p‰‰tell‰ luokan, k‰ytt‰‰ iteraattoreita
-	/*for (auto s : lista)
-	{
-	std::wcout << L"Torni";
-	std::wcout << s.getAlkuruutu().getSarake();
-	std::wcout << s.getAlkuruutu().getRivi() << "-";
-
-	std::wcout << s.getLoppuruutu().getSarake();
-	std::wcout << s.getLoppuruutu().getRivi() << "\n";
-	}*/
+	
 }
 
 

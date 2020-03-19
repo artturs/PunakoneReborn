@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ppl.h>
 #include "asema.h"
 #include "minMaxPaluu.h"
 #include "nappula.h"
@@ -870,7 +871,8 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 	int vari = this->getSiirtovuoro();
 
-	for (int i = 0; i < 8; i++) {
+	//for (int i = 0; i < 8; i++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i){
 		for (int j = 0; j < 8; j++) {
 			//Ei kysele tyhjiltä ruuduilta nappulan nimeä
 			if (this->_lauta[i][j] == NULL) {
@@ -881,7 +883,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			}
 			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari); // myöhäinen sidonta!
 		}
-	}
+	});
 	this->annaLinnoitusSiirrot(lista, vari);
 	this->huolehdiKuninkaanShakeista(lista, vari);
 }

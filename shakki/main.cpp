@@ -7,13 +7,13 @@
 #include "kayttoliittyma.h"
 #include "siirto.h"
 #include "asema.h"
+#include "timer.h"
 
 using namespace std;
 
 int main()
 {
-	wcout << "HeippariShakki\n";
-	wcout << "Tervetuloa pelaamaan!\n";
+	
 
 	int lopetus = 100;
 	Asema asema;
@@ -29,6 +29,7 @@ int main()
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
+		Timer* timer = new Timer();
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
@@ -43,10 +44,10 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari) {
 			MinMaxPaluu paluu;
 			if (koneenVari == 0) {
-				paluu = asema.MaxAB(3, a, b);
+				paluu = asema.MaxAB(7, a, b);
 			}
 			else {
-				paluu = asema.MinAB(3, a, b);
+				paluu = asema.MinAB(7, a, b);
 			}
 			siirto = paluu._parasSiirto;
 		}
@@ -55,6 +56,7 @@ int main()
 				annaVastustajanSiirto();
 		}
 		asema.paivitaAsema(&siirto);
+		timer->Stop();
 	}
 
 

@@ -31,6 +31,62 @@ public:
 	// omalla tavallaan.
 	virtual void annaSiirrot(std::list<Siirto>& lista, Ruutu*, Asema*, int vari) = 0;
 
+	int siirtoLoop(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int paikkaX, int paikkaY, int suuntaX, int suuntaY, int nappulanVari)
+	{
+		int _alkuX = paikkaX; //oman nappulan paikka (X)
+		int _alkuY = paikkaY; //oman nappulan paikka (Y)
+		int _uusiX, _uusiY; //tarkistettava paikka
+
+		int _omaVari = nappulanVari; //oman nappulan väri (lähtöruudussa oleva)
+		int _toisenVari; //toisessa ruudussa olevan nappulan väri
+
+		int _xSuunta = suuntaX; //-1 , 0 tai 1
+		int _ySuunta = suuntaY; //-1 , 0 tai 1
+
+		//alustetaan paikka, jotta nappula ei tutki omaa paikkaansa
+
+		_uusiY = _alkuY + _ySuunta;
+		_uusiX = _alkuX + _xSuunta;
+		for (int i = 0; i < 8; i++)
+		{
+
+			if (_uusiX < 0 || _uusiX > 7 || _uusiY < 0 || _uusiY > 7)
+			{
+				//menee yli
+				return 0;
+			}
+			// ei mitääm tässä, tähän voi mennä
+			if (asema->_lauta[_uusiX][_uusiY] == NULL) {
+				lista.push_back(Siirto(*ruutu, Ruutu(_uusiX, _uusiY)));
+
+			}
+			//tässä nappula, katsotaan voiko syyä
+			if (asema->_lauta[_uusiX][_uusiY] != NULL)
+			{
+				//haetaan toisen nappulan väri
+				_toisenVari = asema->_lauta[_uusiX][_uusiY]->getVari();
+				//oma, ei voi syyä
+				if (_omaVari == _toisenVari)
+				{
+					return 0;
+				}
+				//ei oma, voi syyä
+				if (_omaVari != _toisenVari)
+				{
+					lista.push_back(Siirto(*ruutu, Ruutu(_uusiX, _uusiY)));
+					return 0;
+				}
+			}
+
+
+
+			_uusiY = _uusiY + _ySuunta;
+			_uusiX = _uusiX + _xSuunta;
+		}
+
+		return 1;
+	}
+
 	void setUnicode(std::wstring unicode) { _unicode = unicode; }
 	std::wstring getUnicode() { return _unicode; }
 	void setVari(int vari) { _vari = vari; }
