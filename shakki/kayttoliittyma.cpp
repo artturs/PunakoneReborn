@@ -1,16 +1,17 @@
 #include <Windows.h>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <fcntl.h>
 #include <io.h>
 #include <iostream>
 #include "kayttoliittyma.h"
-
+#pragma optimize("g", on)
 using namespace std;
 
 
 Kayttoliittyma* Kayttoliittyma::instance = 0;
-
+bool first = true;
 
 Kayttoliittyma* Kayttoliittyma::getInstance()
 {
@@ -19,9 +20,39 @@ Kayttoliittyma* Kayttoliittyma::getInstance()
 	return instance;
 }
 
+std::string getFileContents(std::ifstream& File) {
+	std::string Lines = "";        //All lines
+
+	if (File)                      //Check if everything is good
+	{
+		while (File.good())
+		{
+			std::string TempLine;                  //Temp line
+			std::getline(File, TempLine);        //Get temp line
+			TempLine += "\n";                      //Add newline character
+
+			Lines += TempLine;                     //Add newline
+		}
+		return Lines;
+	}
+	else                           //Return error
+	{
+		return "ERROR File does not exist.";
+	}
+}
 
 void Kayttoliittyma::piirraLauta()
 {
+
+	if (first)
+	{
+		std::ifstream Reader("TEXT.txt");             //Open file
+		std::string Art = getFileContents(Reader);       //Get file
+		std::cout << Art << std::endl;               //Print it to the screen
+		Reader.close();                           //Close file
+
+		first = false;
+	}
 
 	//Saa unicode shakkinappulat toimimaan printf kanssa:
 	SetConsoleOutputCP(65001);

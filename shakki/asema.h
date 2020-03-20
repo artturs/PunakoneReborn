@@ -2,8 +2,11 @@
 
 #include <list>
 #include <string>
+#include <vector>
 #include "minmaxpaluu.h"
 #include "siirto.h"
+#include <concurrent_vector.h>
+#pragma optimize("g", on)
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
@@ -39,7 +42,7 @@ public:
 	MinMaxPaluu minimax(int syvyys);
 	MinMaxPaluu MinAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta);	// AlphaBeta-Min-algoritmi.
 	MinMaxPaluu MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta); // Minimax-algoritmi.
-	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
+	void annaLaillisetSiirrot(concurrency::concurrent_vector<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
 	void setSiirtovuoro(int);								// Asettaa siirtovuoron.
 	bool getOnkoValkeaKuningasLiikkunut();					// Linnoittuminen mahdollista?
@@ -65,8 +68,8 @@ private:
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, int vastustajanVari);
-	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+	void annaLinnoitusSiirrot(concurrency::concurrent_vector<Siirto>& lista, int vari);
 
 	// Karsii siirrot, jotka jättävät oman K:n shakkiin.
-	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
+	void huolehdiKuninkaanShakeista(concurrency::concurrent_vector<Siirto>& lista, int vari);
 };

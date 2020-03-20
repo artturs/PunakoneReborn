@@ -3,7 +3,7 @@
 #include "asema.h"
 #include "nappula.h"
 using namespace std;
-
+#pragma optimize("g", on)
 
 Nappula::Nappula(wstring unicode, int vari, int koodi)
 {
@@ -13,7 +13,7 @@ Nappula::Nappula(wstring unicode, int vari, int koodi)
 }
 
 
-void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Torni::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int lahtoruutuY = ruutu->getRivi();
 	int lahtoruutuX = ruutu->getSarake();
@@ -23,100 +23,21 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 	lahtoruudunNappulanVari = asema->_lauta[lahtoruutuX][lahtoruutuY]->getVari();
 	// vaakarivi ruudusta eteenp‰in
-	for (int i = lahtoruutuX + 1; i < 8; i++) {
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][lahtoruutuY] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, lahtoruutuY)));
-		}
-		else if (asema->_lauta[i][lahtoruutuY] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][lahtoruutuY]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, lahtoruutuY)));
-				break;
-			}
-		}
-	}
-	// vaakarivi ruudusta taaksep‰in
-	for (int i = lahtoruutuX - 1; i >= 0; i--) {
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][lahtoruutuY] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, lahtoruutuY)));
-		}
-		else if (asema->_lauta[i][lahtoruutuY] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][lahtoruutuY]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, lahtoruutuY)));
-				break;
-			}
-		}
-	}
-	// pystyrivi ruudusta eteenp‰in
-	for (int i = lahtoruutuY + 1; i < 8; i++) {
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[lahtoruutuX][i] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(lahtoruutuX, i)));
-		}
-		else if (asema->_lauta[lahtoruutuX][i] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[lahtoruutuX][i]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(lahtoruutuX, i)));
-				break;
-			}
-		}
-	}
-	// pystyrivi ruudusta taaksep‰in
-	for (int i = lahtoruutuY - 1; i >= 0; i--) {
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[lahtoruutuX][i] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(lahtoruutuX, i)));
-		}
-		else if (asema->_lauta[lahtoruutuX][i] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[lahtoruutuX][i]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(lahtoruutuX, i)));
-				break;
-			}
-		}
-	}
-	// testausta varten
-	// Huom. uuden standardin mukaista c++ koodia, auto-m‰‰re antaa k‰‰nt‰j‰n p‰‰tell‰ luokan, k‰ytt‰‰ iteraattoreita
-	/*for (auto s : lista)
-	{
-	std::wcout << L"Torni";
-	std::wcout << s.getAlkuruutu().getSarake();
-	std::wcout << s.getAlkuruutu().getRivi() << "-";
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, 1, 0, lahtoruudunNappulanVari);
 
-	std::wcout << s.getLoppuruutu().getSarake();
-	std::wcout << s.getLoppuruutu().getRivi() << "\n";
-	}*/
+	// vaakarivi ruudusta taaksep‰in
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, -1, 0, lahtoruudunNappulanVari);
+
+	// pystyrivi ruudusta eteenp‰in
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, 0, 1, lahtoruudunNappulanVari);
+
+	// pystyrivi ruudusta taaksep‰in
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, 0, -1, lahtoruudunNappulanVari);
+	
 }
 
 
-void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Ratsu::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int lahtoruutuY = ruutu->getRivi();
 	int lahtoruutuX = ruutu->getSarake();
@@ -259,7 +180,7 @@ void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 }
 
 
-void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Lahetti::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int lahtoruutuY = ruutu->getRivi();
 	int lahtoruutuX = ruutu->getSarake();
@@ -272,138 +193,21 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 	lahtoruudunNappulanVari = asema->_lauta[lahtoruutuX][lahtoruutuY]->getVari();
 
 	// viistorivi ruudusta oikealle ylˆs
-	for (int i = lahtoruutuX + 1; i < 8; i++) {
-		// j arvo asetetaan vain silmukan ensimm‰isell‰ kierroksella alkuarvoon
-		if (i == lahtoruutuX + 1) {
-			j = lahtoruutuY + 1;
-		}
-		if (j < 0 || j > 7 || i < 0 || i > 7) {
-			break;
-		}
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][j] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-		}
-		else if (asema->_lauta[i][j] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][j]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-				break;
-			}
-
-		}
-		j++;
-	}
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, 1, 1, lahtoruudunNappulanVari);
 
 	// viistorivi ruudusta oikealle alas
-	for (int i = lahtoruutuX + 1; i < 8; i++) {
-		// j arvo asetetaan vain silmukan ensimm‰isell‰ kierroksella alkuarvoon
-		if (i == lahtoruutuX + 1) {
-			j = lahtoruutuY - 1;
-		}
-		if (j < 0 || j > 7 || i < 0 || i > 7) {
-			break;
-		}
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][j] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-		}
-		else if (asema->_lauta[i][j] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][j]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-				break;
-			}
-		}
-
-		j--;
-	}
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, 1, -1, lahtoruudunNappulanVari);
 
 	// viistorivi ruudusta vasemmalle ylˆs
-	for (int i = lahtoruutuX - 1; i >= 0; i--) {
-		// j arvo asetetaan vain silmukan ensimm‰isell‰ kierroksella alkuarvoon
-		if (i == lahtoruutuX - 1) {
-			j = lahtoruutuY + 1;
-		}
-		if (j < 0 || j > 7 || i < 0 || i > 7) {
-			break;
-		}
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][j] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-		}
-		else if (asema->_lauta[i][j] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][j]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-				break;
-			}
-		}
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, -1, 1, lahtoruudunNappulanVari);
 
-		j++;
-	}
 	// viistorivi ruudusta vasemmalle alas
-	for (int i = lahtoruutuX - 1; i >= 0; i--) {
-		// j arvo asetetaan vain silmukan ensimm‰isell‰ kierroksella alkuarvoon
-		if (i == lahtoruutuX - 1) {
-			j = lahtoruutuY - 1;
-		}
-		if (j < 0 || j > 7 || i < 0 || i > 7) {
-			break;
-		}
-		// Jos tyhj‰ ruutu niin lis‰t‰‰n listaan
-		if (asema->_lauta[i][j] == NULL) {
-			lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-		}
-		else if (asema->_lauta[i][j] != NULL) {
-			// Jos oma nappula niin poistutaan for silmukasta. Ei lis‰t‰ listaan
-			// Tarkistetaan ett‰ jos l‰htˆruudussa olevan nappulan v‰ri on sama kuin tarkastelun alaisessa ruudussa, niin silloin on oma nappula
-			tuloruudunNappulanVari = asema->_lauta[i][j]->getVari();
-			if (lahtoruudunNappulanVari == tuloruudunNappulanVari) {
-				break;
-			}
-			// jos vastujan nappula niin poistutaan for silmukasta. Lis‰t‰‰n listaan
-			if (lahtoruudunNappulanVari != tuloruudunNappulanVari) {
-				lista.push_back(Siirto(*ruutu, Ruutu(i, j)));
-				break;
-			}
-		}
-
-		j--;
-	}
-	// testausta varten
-	// Huom. uuden standardin mukaista c++ koodia, auto-m‰‰re antaa k‰‰nt‰j‰n p‰‰tell‰ luokan, k‰ytt‰‰ iteraattoreita
-	/*for (auto s : lista)
-	{
-	std::wcout << L"L‰hetti";
-	std::wcout << s.getAlkuruutu().getSarake();
-	std::wcout << s.getAlkuruutu().getRivi() << "-";
-
-	std::wcout << s.getLoppuruutu().getSarake();
-	std::wcout << s.getLoppuruutu().getRivi() << "\n";
-	}*/
+	siirtoLoop(lista, ruutu, asema, lahtoruutuX, lahtoruutuY, -1, -1, lahtoruudunNappulanVari);
+	
 }
 
 
-void Daami::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Daami::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	this->Lahetti::annaSiirrot(lista, ruutu, asema, vari);
 	this->Torni::annaSiirrot(lista, ruutu, asema, vari);
@@ -419,7 +223,7 @@ void Daami::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 }
 
 
-void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Kuningas::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	/*perusidea on ett‰ kaikki viereiset ruudut ovat sallittuja. kuten tornilla ja l‰hetill‰,
 	oman nappulan p‰‰lle ei voi menn‰ ja vastustajan nappulan voi syˆd‰.
@@ -569,7 +373,7 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 }
 
 
-void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
+void Sotilas::annaSiirrot(concurrency::concurrent_vector<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int lahtoruutuY = ruutu->getRivi();
 	int lahtoruutuX = ruutu->getSarake();
@@ -706,7 +510,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 }
 
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, std::list<Siirto>& lista, Asema* asema) {
+void Sotilas::lisaaSotilaanKorotukset(Siirto* siirto, concurrency::concurrent_vector<Siirto>& lista, Asema* asema) {
 	if (siirto->getLoppuruutu().getRivi() == 7) {
 		// valkea korottaa
 		siirto->_miksikorotetaan = asema->vd;

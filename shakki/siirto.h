@@ -1,5 +1,6 @@
 #pragma once
 #include "ruutu.h"
+#include <concurrent_vector.h>
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
 // että nappula.h -tiedostoa täytyy includoida.

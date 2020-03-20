@@ -1,8 +1,11 @@
 #include <iostream>
+#include <ppl.h>
 #include "asema.h"
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
+
+#pragma optimize("g", on)
 
 Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
@@ -357,12 +360,13 @@ bool Asema::onkoAvausTaiKeskipeli(int vari)
 	int mustaUpseeriLkm = 0;
 	bool valkeaDaami = false;
 	bool mustaDaami = false;
-	for (int x = 0; x < 8; x++) {
-		for (int y = 0; y < 8; y++) {
-			if (this->_lauta[x][y] == NULL) {
+	//for (int x = 0; x < 8; x++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i){
+		for (int j = 0; j < 8; j++) {
+			if (this->_lauta[i][j] == NULL) {
 				continue;
 			}
-			int nappulanNimi = this->_lauta[x][y]->getKoodi();
+			int nappulanNimi = this->_lauta[i][j]->getKoodi();
 			//Valkoiset
 			if (nappulanNimi == VD) {
 				valkeaUpseeriLkm += 1;
@@ -387,7 +391,7 @@ bool Asema::onkoAvausTaiKeskipeli(int vari)
 			if (nappulanNimi == MR)
 				valkeaUpseeriLkm += 1;
 		}
-	}
+	});
 	//Jos vari on 0 eli valkoiset
 	//niin on keskipeli jos mustalla upseereita yli 2 tai jos daami+1
 	if (vari == 0) {
@@ -488,8 +492,8 @@ double Asema::linjat(int vari)
 {
 	int valkeaLaillisiaSiirtoja = 0;
 	int mustaLaillisiaSiirtoja = 0;
-	std::list<Siirto> valkealista;
-	std::list<Siirto> mustalista;
+	concurrency::concurrent_vector<Siirto> valkealista;
+	concurrency::concurrent_vector<Siirto> mustalista;
 	//valkoiset
 	for (int x = 0; x < 8; x++) {
 		for (int y = 0; y < 8; y++) {
@@ -555,7 +559,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	MinMaxPaluu paluuarvo;
 
 	// Generoidaan aseman lailliset siirrot.
-	std::list<Siirto> siirrot;
+	concurrency::concurrent_vector<Siirto> siirrot;
 	annaLaillisetSiirrot(siirrot);
 
 	// Rekursion kantatapaus 1: peli on loppu
@@ -604,7 +608,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 
 MinMaxPaluu Asema::maxi(int syvyys)
 {
-	std::list<Siirto> lista;
+	concurrency::concurrent_vector<Siirto> lista;
 	Ruutu kuninkaanRuutu;
 	this->annaLaillisetSiirrot(lista);
 	double arvo;
@@ -614,16 +618,16 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	// Tarkasta onko matti tai patti, jos on niin poistu asap, matti -100000, patti 0
 	if (lista.size() == 0) {
 		//selvit‰ kuninkaan ruutu
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
-				if (this->_lauta[x][y] != NULL) {
-					if (this->_lauta[x][y]->getKoodi() == VK) {
-						kuninkaanRuutu.setSarake(x);
-						kuninkaanRuutu.setRivi(y);
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
+			for (int j = 0; j < 8; j++) {
+				if (this->_lauta[i][j] != NULL) {
+					if (this->_lauta[i][j]->getKoodi() == VK) {
+						kuninkaanRuutu.setSarake(i);
+						kuninkaanRuutu.setRivi(j);
 					}
 				}
 			}
-		}
+		});
 		//matti
 		if (this->onkoRuutuUhattu(&kuninkaanRuutu, 1)) {
 			paluu._evaluointiArvo = -1000000;
@@ -658,7 +662,7 @@ MinMaxPaluu Asema::maxi(int syvyys)
 
 MinMaxPaluu Asema::mini(int syvyys)
 {
-	std::list<Siirto> lista;
+	concurrency::concurrent_vector<Siirto> lista;
 	Ruutu kuninkaanRuutu;
 	this->annaLaillisetSiirrot(lista);
 	double arvo;
@@ -668,16 +672,16 @@ MinMaxPaluu Asema::mini(int syvyys)
 	// Tarkasta onko matti tai patti, jos on niin poistu asap, matti -100000, patti 0
 	if (lista.size() == 0) {
 		//selvit‰ kuninkaan ruutu
-		for (int x = 0; x < 8; x++) {
-			for (int y = 0; y < 8; y++) {
-				if (this->_lauta[x][y] != NULL) {
-					if (this->_lauta[x][y]->getKoodi() == MK) {
-						kuninkaanRuutu.setSarake(x);
-						kuninkaanRuutu.setRivi(y);
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
+			for (int j = 0; j < 8; j++) {
+				if (this->_lauta[i][j] != NULL) {
+					if (this->_lauta[i][j]->getKoodi() == MK) {
+						kuninkaanRuutu.setSarake(i);
+						kuninkaanRuutu.setRivi(j);
 					}
 				}
 			}
-		}
+		});
 		//matti
 		if (this->onkoRuutuUhattu(&kuninkaanRuutu, 0)) {
 			paluu._evaluointiArvo = 1000000;
@@ -713,9 +717,9 @@ MinMaxPaluu Asema::mini(int syvyys)
 
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
-	std::list<Siirto> vastustajaSiirrotLista;
+	concurrency::concurrent_vector<Siirto> vastustajaSiirrotLista;
 	//V‰reitt‰in k‰yd‰‰n l‰pi kaikki ruudut ja niiss‰ olevan nappulan siirrot ker‰t‰‰n vastustajan siirtolistaan
-	for (int i = 0; i < 8; i++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
 		for (int j = 0; j < 8; j++) {
 			if (this->_lauta[i][j] == NULL) {
 				continue;
@@ -723,7 +727,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 			if (this->_lauta[i][j]->getVari() == vastustajanVari)
 				this->_lauta[i][j]->annaSiirrot(vastustajaSiirrotLista, &Ruutu(i, j), this, vastustajanVari); // myˆh.sidonta
 		}
-	}
+	});
 	// K‰yd‰‰n vastustajaSiirtoLista l‰pi ja jos sielt‰ lˆytyy tarkasteltava ruutu niin tiedet‰‰n sen olevan uhattu
 	bool ruutuOk = true;
 	for (auto s : vastustajaSiirrotLista)
@@ -737,7 +741,7 @@ bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 }
 
 
-void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
+void Asema::huolehdiKuninkaanShakeista(concurrency::concurrent_vector<Siirto>& lista, int vari)
 {
 	// poistaa listasta siirrot jotka viev‰t oman kuninkaan shakkiin
 	// k‰yd‰‰n saatua siirtolistaa l‰pi ja jos siell‰ oleva siirto asettaa kuninkaan shakkiin, 
@@ -745,7 +749,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 	int kuninkaanX;
 	int kuninkaanY;
 	if (vari == 0) {
-		for (int i = 0; i < 8; i++) {
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
 			for (int j = 0; j < 8; j++) {
 				if (this->_lauta[i][j] == NULL)
 					continue;
@@ -755,10 +759,10 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 					break;
 				}
 			}
-		}
+		});
 	}
 	if (vari == 1) {
-		for (int i = 0; i < 8; i++) {
+		concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i) {
 			for (int j = 0; j < 8; j++) {
 				if (this->_lauta[i][j] == NULL)
 					continue;
@@ -768,11 +772,11 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 					break;
 				}
 			}
-		}
+		});
 	}
 	// Jotta ei jouduta perumaan oikeaan asemaan tehty‰ siirtoa
 	Asema testiAsema;
-	std::list<Siirto> siivottuSiirrotLista;
+	concurrency::concurrent_vector<Siirto> siivottuSiirrotLista;
 	for (auto s : lista) {
 		testiAsema = *this;
 		testiAsema.paivitaAsema(&s);
@@ -820,7 +824,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
 }
 
 
-void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
+void Asema::annaLinnoitusSiirrot(concurrency::concurrent_vector<Siirto>& lista, int vari)
 {
 	//// Linnoituksien huomioiminen
 	//// 1. Kuningas ei saa olla liikkunut
@@ -867,10 +871,11 @@ void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
 }
 
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+void Asema::annaLaillisetSiirrot(concurrency::concurrent_vector<Siirto>& lista) {
 	int vari = this->getSiirtovuoro();
 
-	for (int i = 0; i < 8; i++) {
+	//for (int i = 0; i < 8; i++) {
+	concurrency::parallel_for(size_t(0), size_t(8), [&](size_t i){
 		for (int j = 0; j < 8; j++) {
 			//Ei kysele tyhjilt‰ ruuduilta nappulan nime‰
 			if (this->_lauta[i][j] == NULL) {
@@ -881,7 +886,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			}
 			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari); // myˆh‰inen sidonta!
 		}
-	}
+	});
 	this->annaLinnoitusSiirrot(lista, vari);
 	this->huolehdiKuninkaanShakeista(lista, vari);
 }
@@ -893,7 +898,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 MinMaxPaluu Asema::MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta) {
 
 	MinMaxPaluu paluu;
-	std::list<Siirto> siirrot;
+	concurrency::concurrent_vector<Siirto> siirrot;
 	annaLaillisetSiirrot(siirrot);
 
 	if (siirrot.size() == 0) {
@@ -922,7 +927,7 @@ MinMaxPaluu Asema::MaxAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta) {
 MinMaxPaluu Asema::MinAB(int syvyys, MinMaxPaluu alpha, MinMaxPaluu beta) {
 
 	MinMaxPaluu paluu;
-	std::list<Siirto> siirrot;
+	concurrency::concurrent_vector<Siirto> siirrot;
 	annaLaillisetSiirrot(siirrot);
 
 

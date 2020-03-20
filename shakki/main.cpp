@@ -1,19 +1,25 @@
 #include <iostream>
 #include <Windows.h>
 #include <io.h>
+#include <concurrent_vector.h>
 #include <fcntl.h>
 #include <iostream>
 #include <string>
+#include <Vector>
+#include <ppl.h>
+#include <PPL.h>
 #include "kayttoliittyma.h"
 #include "siirto.h"
 #include "asema.h"
+#include "timer.h"
+#pragma optimize("g", on)
 
 using namespace std;
+using namespace concurrency;
 
 int main()
 {
-	wcout << "HeippariShakki\n";
-	wcout << "Tervetuloa pelaamaan!\n";
+	
 
 	int lopetus = 100;
 	Asema asema;
@@ -24,11 +30,16 @@ int main()
 	b._evaluointiArvo = +INFINITY;
 	Peli peli(Kayttoliittyma::getInstance()->
 		kysyVastustajanVari());
-	std::list<Siirto> lista;
+
+	concurrent_vector<Siirto> lista;
+	
 	system("cls");
 	int koneenVari = peli.getKoneenVari();
 
 	while (lopetus != 0) {
+
+		Timer* timer = new Timer();
+
 		lista.clear();
 		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
@@ -55,6 +66,8 @@ int main()
 				annaVastustajanSiirto();
 		}
 		asema.paivitaAsema(&siirto);
+
+		timer->Stop();
 	}
 
 

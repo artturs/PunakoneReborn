@@ -2,10 +2,6 @@
 
 using namespace std;
 
-#include "peli.h"
-
-using namespace std;
-
 
 Peli::Peli(int ihmisenVari)
 {
